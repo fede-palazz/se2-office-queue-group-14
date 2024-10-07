@@ -1,6 +1,8 @@
 import express from "express";
 import morgan from "morgan";
 import cors from "cors";
+import initRoutes from "./src/routes.js";
+import { registerErrorHandler } from "./src/helpers.js";
 
 /* INIT */
 const app = express();
@@ -16,6 +18,12 @@ app.use(
     credentials: true,
   })
 );
+
+/* ROUTES */
+initRoutes(app);
+
+/* ERROR HANDLER */
+registerErrorHandler(app);
 
 /* START SERVER */
 app.listen(port, () => {
