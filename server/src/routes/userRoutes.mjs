@@ -1,7 +1,7 @@
 import express from "express";
 import { validateRequest } from "../helper.mjs";
 import { body } from "express-validator";
-import UserDAO from "../daos/userDAO.mjs";
+import UserController from "../controllers/userController.mjs";
 import { Role } from "../models/User";
 
 /**
@@ -15,7 +15,7 @@ class UserRoutes {
   constructor(authenticator) {
     this.authService = authenticator;
     this.router = express.Router();
-    this.dao = new UserDAO();
+    this.controller = new UserController();
     this.initRoutes();
   }
 
@@ -60,23 +60,26 @@ class UserRoutes {
       body("email")
         .notEmpty()
         .withMessage("Email cannot be empty")
-        .isAscii()
-        .withMessage("Email cannot contain emojis"), // The request body must contain a string non-empty attribute called "email"
+        .isEmail()
+        .withMessage("The parameter has to be a valid email"), // The request body must contain a string non-empty attribute called "email"
       body("password")
         .isLength({ min: 6 })
         .withMessage("Password has to be at least 6 characters long")
         .isAscii()
         .withMessage("Password cannot contain emojis"), // The request body must contain a string non-empty attribute called "password"
-      body("role").notEmpty().withMessage("Role cannot be empty").isIn(Role), // The request body must contain a string non-empty attribute called "role"
+      body("role")
+        .notEmpty()
+        .withMessage("Role cannot be empty")
+        .isIn(Role.values()), // The request body must contain a string non-empty attribute called "role"
       validateRequest,
       (req, res, next) => {
-        this.dao
+        this.controller
           .createUser(
-            req.body.username,
+            req.body.user_id,
             req.body.name,
-            req.body.surname,
-            req.body.avatar,
-            req.body.password
+            req.body.email,
+            req.body.password,
+            req.body.role
           )
           .then(() => res.status(200).end())
           .catch((err) => next(err));

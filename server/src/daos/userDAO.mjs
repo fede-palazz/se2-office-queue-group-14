@@ -14,7 +14,7 @@ class UserDAO {
     return new Promise((resolve, reject) => {
       try {
         const sql = `SELECT * 
-                     FROM users 
+                     FROM User 
                      WHERE user_id = ?;`;
         db.get(sql, [user_id], (err, row) => {
           if (err) {
@@ -53,12 +53,12 @@ class UserDAO {
    * @param password The password of the user.
    * @returns A Promise that resolves to true if the user has been created.
    */
-  createUser(user_id, name, eail, role, password) {
+  createUser(user_id, name, email, role, password) {
     return new Promise((resolve, reject) => {
       try {
         const salt = crypto.randomBytes(16);
         const hashedPassword = crypto.scryptSync(password, salt, 16);
-        const sql = `INSERT INTO users(user_id, name, email, role, password, salt) 
+        const sql = `INSERT INTO User(user_id, name, email, role, password, salt) 
                      VALUES(?,?,?,?,?,?);`;
         db.run(
           sql,
@@ -90,7 +90,7 @@ class UserDAO {
     return new Promise((resolve, reject) => {
       try {
         const sql = `SELECT * 
-                             FROM users 
+                             FROM User 
                              WHERE user_id = ?;`;
         db.get(sql, [user_id], (err, row) => {
           if (err) {

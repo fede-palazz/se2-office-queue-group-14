@@ -24,6 +24,7 @@ class User {
  */
 const Role = Object.freeze({
   MANAGER: "Manager",
+  OFFICER: "Officer",
   ADMIN: "Admin",
 });
 
