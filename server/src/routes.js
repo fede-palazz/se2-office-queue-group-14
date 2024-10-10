@@ -1,11 +1,13 @@
-import ExampleRoutes from "./routes/exampleRoutes.js";
+import Authenticator from "../auth.mjs";
+import { AuthRoutes } from "./routes/authRoutes.mjs";
 
-const PREFIX = "/api";
+const PREFIX = "/officequeue";
 
 function initRoutes(app) {
-  const exampleRoutes = new ExampleRoutes();
+  const authenticator = new Authenticator(app);
+  const authRoutes = new AuthRoutes(authenticator);
 
-  app.use(`${PREFIX}/example`, exampleRoutes.getRouter());
+  app.use(`${PREFIX}/auth`, authRoutes.getRouter());
 }
 
 export default initRoutes;
