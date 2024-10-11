@@ -1,7 +1,7 @@
 import db from "../db/db.js";
 import crypto from "crypto";
-import { UserNotFound, UserNotAuthenticated } from "../errors/userError.mjs";
-import { User, Role } from "../models/User.mjs";
+import { UserNotFound, UserNotAuthenticated } from "../errors/userError.js";
+import { User, Role } from "../models/User.js";
 
 class UserDAO {
   /**

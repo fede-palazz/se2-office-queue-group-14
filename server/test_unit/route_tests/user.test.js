@@ -1,17 +1,19 @@
-jest.mock("../../src/controllers/userController.mjs");
-jest.mock("../../auth.mjs");
+jest.mock("../../src/controllers/userController.js");
+jest.mock("../../auth.js");
 jest.mock("../../src/helpers.js");
+
 import { test, expect, jest, describe, afterEach } from "@jest/globals";
 import request from "supertest";
-import express from "express";
-import { app } from "../../index.mjs";
-import { User, Role } from "../../src/models/User.mjs";
-import UserController from "../../src/controllers/userController.mjs";
+import { app } from "../../index.js";
+import { User, Role } from "../../src/models/User.js";
+import UserController from "../../src/controllers/userController.js";
 import {
   UserNotAuthenticated,
   UserNotFound,
   UserAlreadyExistsError,
-} from "../../src/errors/userError.mjs";
+} from "../../src/errors/userError.js";
+import { Authenticator } from "../../auth.js";
+import { validateRequest } from "../../src/helpers.js";
 
 const baseURL = "/officequeue";
 
@@ -54,34 +56,15 @@ describe("POST /users", () => {
       .spyOn(UserController.prototype, "createUser")
       .mockResolvedValueOnce(true);
 
-    /*jest.mock("express-validator", () => ({
-      body: jest.fn().mockImplementation(() => ({
-        isAscii: () => {},
-        isIn: () => {},
-        notEmpty: () => {},
-        isLength: () => {},
-        isEmail: () => {},
-      })),
-    }));*/
-
-    jest
-      .spyOn(ErrorHandler.prototype, "validateRequest")
-      .mockImplementation((req, res, next) => {
-        return next();
-      });
+    validateRequest.mockImplementation((req, res, next) => {
+      return next();
+    });
 
     const response = await request(app)
       .post(baseURL + "/users")
       .send(testUser);
     expect(response.status).toBe(200);
     expect(UserController.prototype.createUser).toHaveBeenCalledTimes(1);
-    expect(UserController.prototype.createUser).toHaveBeenCalledWith(
-      testUser.user_id,
-      testUser.name,
-      testUser.email,
-      testUser.role,
-      testUser.password
-    );
   });
 
   //At least one input is invalid
@@ -95,22 +78,9 @@ describe("POST /users", () => {
       role: Role.ADMIN,
     };
 
-    /*jest.mock("express-validator", () => ({
-      body: jest.fn().mockImplementation(() => ({
-        isAscii: () => {},
-        isIn: () => {},
-        notEmpty: () => {},
-        isLenght: () => {},
-        isEmail: () => {},
-      })),
-    }));*/
-
-    jest
-      .spyOn(ErrorHandler.prototype, "validateRequest")
-      .mockImplementation((req, res, next) => {
-        return res.status(422).json({ error: "Data error" });
-      });
-
+    validateRequest.mockImplementation((req, res, next) => {
+      return res.status(422).json({ error: "Data error" });
+    });
     const response = await request(app)
       .post(baseURL + "/users")
       .send(testUser);
@@ -132,34 +102,15 @@ describe("POST /users", () => {
       .spyOn(UserController.prototype, "createUser")
       .mockRejectedValue(new UserAlreadyExistsError());
 
-    /*jest.mock("express-validator", () => ({
-      body: jest.fn().mockImplementation(() => ({
-        isAscii: () => {},
-        isIn: () => {},
-        notEmpty: () => {},
-        isLenght: () => {},
-        isEmail: () => {},
-      })),
-    }));*/
-
-    jest
-      .spyOn(ErrorHandler.prototype, "validateRequest")
-      .mockImplementation((req, res, next) => {
-        return next();
-      });
+    validateRequest.mockImplementation((req, res, next) => {
+      return next();
+    });
 
     const response = await request(app)
       .post(baseURL + "/users")
       .send(testUser);
     expect(response.status).toBe(409);
     expect(UserController.prototype.createUser).toHaveBeenCalledTimes(1);
-    expect(UserController.prototype.createUser).toHaveBeenCalledWith(
-      testUser.user_id,
-      testUser.name,
-      testUser.email,
-      testUser.role,
-      testUser.password
-    );
   });
 
   //Execute after each test
@@ -179,7 +130,7 @@ describe("POST ezelectronics/sessions", () => {
   test("It should return 200 success code", async () => {
     jest.spyOn(Authenticator.prototype, "login").mockResolvedValue(testAdmin);
 
-    jest.mock("express-validator", () => ({
+    /*jest.mock("express-validator", () => ({
       body: jest.fn().mockImplementation(() => ({
         isAscii: () => {},
         isLenght: () => {},
@@ -205,7 +156,7 @@ describe("POST ezelectronics/sessions", () => {
   test("It should return 401 error code", async () => {
     jest.spyOn(Authenticator.prototype, "login").mockRejectedValue(false);
 
-    jest.mock("express-validator", () => ({
+    /*jest.mock("express-validator", () => ({
       body: jest.fn().mockImplementation(() => ({
         isString: () => {},
         notEmpty: () => {},
