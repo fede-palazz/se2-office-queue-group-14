@@ -18,4 +18,4 @@ class Ticket {
     }
 }
 
-export { Ticket };
+export default { Ticket };

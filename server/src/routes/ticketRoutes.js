@@ -10,7 +10,7 @@ function TicketRoutes() {
     this.getRouter = () => this.router;
 
     this.initRoutes = function () {
-        this.router.get("./ticket/:id", (req, res, next) => {
+        this.router.get("/:id", (req, res, next) => {
           this.ticketController
             .getTicketById(req.params.id)
             .then((result) => {
@@ -21,14 +21,14 @@ function TicketRoutes() {
             });
         });
 
-        this.router.post("./ticket", (req, res, next) => {
+        this.router.post("/", (req, res, next) => {
           this.ticketController
             .createTicket(req.body)
             .then((result) => {
               res.status(200).send(result);
             })
             .catch((err) => {
-              next(err);
+              res.send("Error here: ", err);
             });
         });
       };

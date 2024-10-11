@@ -1,9 +1,10 @@
-import ticketDAO from "../daos/ticketDAO.mjs";
+import ticketDAO from "../daos/ticketDAO.js";
 
 function ticketController() {
     const dao = new ticketDAO();
 
     this.createTicket = async (ticketData) => {
+        console.log("Debug: ticketData: ", ticketData);
         try {
             const ticket = await dao.createTicket(ticketData);
             return ticket;
@@ -17,6 +18,7 @@ function ticketController() {
             const ticket = await dao.getTicketById(ticketId);
             return ticket;
         } catch (error) {
+            console.log("Debug: error: ", error);
             throw error;
         }
     }
