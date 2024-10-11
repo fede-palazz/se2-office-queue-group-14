@@ -4,7 +4,7 @@ import sqlite from "sqlite3";
 let env = process.env.NODE_ENV ? process.env.NODE_ENV.trim() : "development";
 
 // The database file path is determined based on the environment variable.
-const PATH = env === "test" ? "./src/db/testDB.db" : "./src/db/ququeDB.db";
+const PATH = env === "test" ? "./src/db/testDB.db" : "./src/db/queueDB.db";
 
 // The database is created and the foreign keys are enabled.
 const db = new sqlite.Database(PATH, (err) => {

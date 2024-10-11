@@ -69,6 +69,7 @@ class UserDAO {
                 err.message.includes("UNIQUE constraint failed: users.username")
               )
                 reject(new UserAlreadyExistsError());
+              console.log(err); //TODO
               reject(err);
               return;
             }

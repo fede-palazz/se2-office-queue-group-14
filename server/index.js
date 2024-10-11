@@ -26,7 +26,13 @@ initRoutes(app);
 registerErrorHandler(app);
 
 /* START SERVER */
-if (!module.parent) {
+if (process.env.NODE_ENV) {
+  if (!module.parent) {
+    app.listen(port, () => {
+      console.log(`Server listening at http://localhost:${port}`);
+    });
+  }
+} else {
   app.listen(port, () => {
     console.log(`Server listening at http://localhost:${port}`);
   });

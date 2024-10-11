@@ -67,7 +67,10 @@ class UserRoutes {
         .withMessage("Password has to be at least 6 characters long")
         .isAscii()
         .withMessage("Password cannot contain emojis"), // The request body must contain a string non-empty attribute called "password"
-      body("role").notEmpty().withMessage("Role cannot be empty").isIn(Role), // The request body must contain a string non-empty attribute called "role"
+      body("role")
+        .notEmpty()
+        .withMessage("Role cannot be empty")
+        .isIn(Object.values(Role)), // The request body must contain a string non-empty attribute called "role"
       validateRequest,
       (req, res, next) => {
         this.controller
