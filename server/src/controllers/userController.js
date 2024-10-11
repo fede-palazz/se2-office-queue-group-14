@@ -1,4 +1,4 @@
-import UserDAO from "../daos/userDAO.mjs";
+import UserDAO from "../daos/userDAO.js";
 
 /**
  * Represents a controller for managing users.

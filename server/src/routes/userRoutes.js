@@ -1,8 +1,8 @@
 import express from "express";
-import { validateRequest } from "../helper.mjs";
+import { validateRequest } from "../helpers.js";
 import { body } from "express-validator";
-import UserController from "../controllers/userController.mjs";
-import { Role } from "../models/User";
+import UserController from "../controllers/userController.js";
+import { Role } from "../models/User.js";
 
 /**
  * Represents a class that defines the routes for handling users.
@@ -67,10 +67,7 @@ class UserRoutes {
         .withMessage("Password has to be at least 6 characters long")
         .isAscii()
         .withMessage("Password cannot contain emojis"), // The request body must contain a string non-empty attribute called "password"
-      body("role")
-        .notEmpty()
-        .withMessage("Role cannot be empty")
-        .isIn(Role.values()), // The request body must contain a string non-empty attribute called "role"
+      body("role").notEmpty().withMessage("Role cannot be empty").isIn(Role), // The request body must contain a string non-empty attribute called "role"
       validateRequest,
       (req, res, next) => {
         this.controller

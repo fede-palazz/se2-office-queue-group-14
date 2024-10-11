@@ -1,4 +1,4 @@
-import UserDAO from "./src/daos/userDAO.mjs";
+import UserDAO from "./src/daos/userDAO.js";
 
 // Passport-related imports
 import passport from "passport";

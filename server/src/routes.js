@@ -1,6 +1,6 @@
-import Authenticator from "../auth.mjs";
-import { AuthRoutes } from "./routes/authRoutes.mjs";
-import { UserRoutes } from "./routes/userRoutes.mjs";
+import Authenticator from "../auth.js";
+import { AuthRoutes } from "./routes/authRoutes.js";
+import { UserRoutes } from "./routes/userRoutes.js";
 
 const PREFIX = "/officequeue";
 
