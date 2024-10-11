@@ -1,6 +1,6 @@
 import db from "../db/db.js";
-import { Counter } from "../models/Counter.mjs";
-import { CounterNotFound } from "../errors/counterError.mjs";
+import { Counter } from "../models/Counter.js";
+import { CounterNotFound } from "../errors/counterError.js";
 
 class CounterDAO {
   /**

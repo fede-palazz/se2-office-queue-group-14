@@ -1,6 +1,6 @@
 import db from "../db/db.js";
 import { Queue } from "../models/Queue.js";
-import { QueueNotFound } from "../errors/queueError.mjs";
+import { QueueNotFound } from "../errors/queueError.js";
 
 class QueueDAO {
   /**
