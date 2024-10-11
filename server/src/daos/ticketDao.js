@@ -50,3 +50,5 @@ function ticketDao() {
     }
 
   }
+
+    export default ticketDao;

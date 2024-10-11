@@ -1,0 +1,18 @@
+### Create a new ticket
+POST http://localhost:3000/api/tickets
+Content-Type: application/json
+{
+    ticket_code: "T001",
+    service_id: 1,
+    issue_time: "2021-09-01 10:00:00",
+    status: "PENDING",
+    counter_id: 1
+}
+
+### Get all tickets
+GET http://localhost:3000/api/tickets
+
+### Get a specific ticket by ID
+GET http://localhost:3000/api/tickets/1
+
+
