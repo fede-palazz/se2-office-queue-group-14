@@ -36,9 +36,9 @@ class Authenticator {
      * If the user is authenticated, the user is returned, otherwise an error message is returned.
      */
     passport.use(
-      new LocalStrategy((user_id, password, done) => {
+      new LocalStrategy((username, password, done) => {
         this.dao
-          .authenticateUser(user_id, password)
+          .authenticateUser(username, password)
           .then((user) => {
             return done(null, user);
           })
@@ -64,7 +64,7 @@ class Authenticator {
      */
     passport.deserializeUser((user, done) => {
       this.dao
-        .getUserByUserID(user.user_id)
+        .getUserByUserID(user.username)
         .then((user) => {
           done(null, user);
         })
@@ -87,6 +87,7 @@ class Authenticator {
    */
   login(req, res, next) {
     return new Promise((resolve, reject) => {
+      console.log(req.body.username + req.body.password);
       passport.authenticate("local", (err, user, info) => {
         if (err) {
           return reject(err);

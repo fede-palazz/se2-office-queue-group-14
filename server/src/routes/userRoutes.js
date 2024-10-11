@@ -38,7 +38,7 @@ class UserRoutes {
      * Route for creating a user.
      * It does not require authentication.
      * It requires the following body parameters:
-     * - user_id: string. It cannot be empty and it must be unique (an existing user_id cannot be used to create a new user)
+     * - username: string. It cannot be empty and it must be unique (an existing username cannot be used to create a new user)
      * - name: string. It cannot be empty.
      * - email: string. It cannot be empty.
      * - password: string. It cannot be empty.
@@ -47,11 +47,11 @@ class UserRoutes {
      */
     this.router.post(
       "/",
-      body("user_id")
+      body("username")
         .notEmpty()
         .withMessage("User_id cannot be empty")
         .isAscii()
-        .withMessage("User_id cannot contain emojis"), // The request body must contain a string non-empty attribute called "user_id"
+        .withMessage("User_id cannot contain emojis"), // The request body must contain a string non-empty attribute called "username"
       body("name")
         .notEmpty()
         .withMessage("Name cannot be empty")
@@ -75,7 +75,7 @@ class UserRoutes {
       (req, res, next) => {
         this.controller
           .createUser(
-            req.body.user_id,
+            req.body.username,
             req.body.name,
             req.body.email,
             req.body.password,

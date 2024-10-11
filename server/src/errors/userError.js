@@ -1,6 +1,6 @@
 const USER_NOT_AUTHENTICATED = "Incorrect user id and/or password";
 const USER_NOT_FOUND = "User not found";
-const USER_ALREADY_EXISTS = "The user_id already exists";
+const USER_ALREADY_EXISTS = "The username already exists";
 
 /**
  * Represents an error that occurs when a user is not authenticated.

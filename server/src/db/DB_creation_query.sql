@@ -43,7 +43,7 @@ CREATE TABLE Queue (
 
 -- Table: Managers
 CREATE TABLE User (
-    user_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    username INTEGER PRIMARY KEY AUTOINCREMENT,
     name VARCHAR(100),
     email VARCHAR(100),
     password VARCHAR(100),
