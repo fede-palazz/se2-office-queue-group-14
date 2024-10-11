@@ -1,6 +1,6 @@
 import db from "../db/db.js";
-import { Service } from "../models/Service.mjs";
-import { ServiceNotFound } from "../errors/serviceError.mjs";
+import { Service } from "../models/Service.js";
+import { ServiceNotFound } from "../errors/serviceError.js";
 
 class ServiceDAO {
   /**
