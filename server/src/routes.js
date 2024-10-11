@@ -1,11 +1,16 @@
-import ExampleRoutes from "./routes/exampleRoutes.js";
+import Authenticator from "../auth.js";
+import { AuthRoutes } from "./routes/authRoutes.js";
+import { UserRoutes } from "./routes/userRoutes.js";
 
-const PREFIX = "/api";
+const PREFIX = "/officequeue";
 
 function initRoutes(app) {
-  const exampleRoutes = new ExampleRoutes();
+  const authenticator = new Authenticator(app);
+  const authRoutes = new AuthRoutes(authenticator);
+  const userRoutes = new UserRoutes(authenticator);
 
-  app.use(`${PREFIX}/example`, exampleRoutes.getRouter());
+  app.use(`${PREFIX}/sessions`, authRoutes.getRouter());
+  app.use(`${PREFIX}/users`, userRoutes.getRouter());
 }
 
 export default initRoutes;
