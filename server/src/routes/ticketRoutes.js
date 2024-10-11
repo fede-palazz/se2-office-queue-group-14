@@ -3,11 +3,12 @@ import ticketController from "../controllers/ticketController.js";
 import { validateRequest } from "../helpers.js";
 import { param, body } from "express-validator";
 
-function TicketRoutes() {
-    this.router = express.Router();
-    this.ticketController = new ticketController();
+function TicketRoutes(authenticator) {
+  this.router = express.Router();
+  this.ticketController = new ticketController();
+  this.authenticator = authenticator;
 
-    this.getRouter = () => this.router;
+  this.getRouter = () => this.router;
 
     this.initRoutes = function () {
       this.router.post("/", (req, res, next) => {
@@ -33,11 +34,19 @@ function TicketRoutes() {
             });
         });
 
+        this.router.post("/", (req, res, next) => {
+          this.ticketController
+            .createTicket(req.body)
+            .then((result) => {
+              res.status(200).send(result);
+            })
+            .catch((err) => {
+              res.send("Error here: ", err);
+            });
+        });
       };
 
-    
       this.initRoutes();
-
 }
 
 export default TicketRoutes;
