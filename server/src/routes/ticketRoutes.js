@@ -10,6 +10,17 @@ function TicketRoutes() {
     this.getRouter = () => this.router;
 
     this.initRoutes = function () {
+      this.router.post("/", (req, res, next) => {
+        this.ticketController
+          .createTicket(req.body)
+          .then((result) => {
+            res.status(200).send(result);
+          })
+          .catch((err) => {
+            res.send(err);
+          });
+      });
+
         this.router.get("/:id", (req, res, next) => {
           this.ticketController
             .getTicketById(req.params.id)
@@ -17,20 +28,11 @@ function TicketRoutes() {
               res.status(200).send(result);
             })
             .catch((err) => {
-              next(err);
+              err.message = "Ticket not found";
+              res.status(404).send(err);
             });
         });
 
-        this.router.post("/", (req, res, next) => {
-          this.ticketController
-            .createTicket(req.body)
-            .then((result) => {
-              res.status(200).send(result);
-            })
-            .catch((err) => {
-              res.send("Error here: ", err);
-            });
-        });
       };
 
     
