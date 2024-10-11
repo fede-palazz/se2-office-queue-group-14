@@ -4,14 +4,14 @@
 class User {
   /**
    * Creates a new instance of the User class.
-   * @param user_id - The user id of the user. This is unique for each user.
+   * @param username - The user id of the user. This is unique for each user.
    * @param name - The name of the user.
    * @param email - The name of the user.
    * @param role - The role of the user.
    */
 
-  constructor(user_id, name, email, role) {
-    this.user_id = user_id;
+  constructor(username, name, email, role) {
+    this.username = username;
     this.name = name;
     this.email = email;
     this.role = role;

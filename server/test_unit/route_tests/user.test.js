@@ -46,7 +46,7 @@ describe("POST /users", () => {
 
   test("It should return a 200 success code", async () => {
     const testUser = {
-      user_id: "test",
+      username: "test",
       name: "test",
       email: "admin@polito.it",
       password: "test",
@@ -71,7 +71,7 @@ describe("POST /users", () => {
 
   test("It should return a 422 error code", async () => {
     const testUser = {
-      user_id: "test",
+      username: "test",
       name: "test",
       email: "admin",
       password: "test",
@@ -92,7 +92,7 @@ describe("POST /users", () => {
 
   test("It should return a 409 error code", async () => {
     const testUser = {
-      user_id: "test",
+      username: "test",
       name: "test",
       surname: "test",
       password: "test",
@@ -123,7 +123,7 @@ describe("POST /users", () => {
 });
 /*
 describe("POST ezelectronics/sessions", () => {
-  const testBody = { user_id: "admin", password: "password" };
+  const testBody = { username: "admin", password: "password" };
 
   //Nominal login
 

@@ -5,23 +5,23 @@ import { User, Role } from "../models/User.js";
 
 class UserDAO {
   /**
-   * Checks whether the information provided during login (user_id and password) is correct.
-   * @param user_id The user_id of the user.
+   * Checks whether the information provided during login (username and password) is correct.
+   * @param username The username of the user.
    * @param plainPassword The password of the user (in plain text).
    * @returns A Promise that resolves the user if he is authenticated.
    */
-  authenticateUser(user_id, plainPassword) {
+  authenticateUser(username, plainPassword) {
     return new Promise((resolve, reject) => {
       try {
         const sql = `SELECT * 
                      FROM User 
-                     WHERE user_id = ?;`;
-        db.get(sql, [user_id], (err, row) => {
+                     WHERE username = ?;`;
+        db.get(sql, [username], (err, row) => {
           if (err) {
             reject(err);
             return;
           }
-          //If there is no user with the given user_id the user is not authenticated (Not existing user).
+          //If there is no user with the given username the user is not authenticated (Not existing user).
           if (!row) {
             reject(new UserNotAuthenticated());
           } else {
@@ -35,7 +35,7 @@ class UserDAO {
             if (!crypto.timingSafeEqual(passwordHex, hashedPassword)) {
               reject(new UserNotAuthenticated());
             }
-            resolve(new User(row.user_id, row.name, row.email, row.role));
+            resolve(new User(row.username, row.name, row.email, row.role));
           }
         });
       } catch (error) {
@@ -46,30 +46,29 @@ class UserDAO {
 
   /**
    * Creates a new user and saves its information in the database
-   * @param user_id The user_id of the user. It must be unique.
+   * @param username The username of the user. It must be unique.
    * @param name The name of the user
    * @param email The email of the user
    * @param role The role of the user
    * @param password The password of the user.
    * @returns A Promise that resolves to true if the user has been created.
    */
-  createUser(user_id, name, email, role, password) {
+  createUser(username, name, email, role, password) {
     return new Promise((resolve, reject) => {
       try {
         const salt = crypto.randomBytes(16);
         const hashedPassword = crypto.scryptSync(password, salt, 16);
-        const sql = `INSERT INTO User(user_id, name, email, role, password, salt) 
+        const sql = `INSERT INTO User(username, name, email, role, password, salt) 
                      VALUES(?,?,?,?,?,?);`;
         db.run(
           sql,
-          [user_id, name, email, role, hashedPassword, salt],
+          [username, name, email, role, hashedPassword, salt],
           (err) => {
             if (err) {
               if (
                 err.message.includes("UNIQUE constraint failed: users.username")
               )
                 reject(new UserAlreadyExistsError());
-              console.log(err); //TODO
               reject(err);
               return;
             }
@@ -84,16 +83,16 @@ class UserDAO {
 
   /**
    * Returns a user object from the database based on the username.
-   * @param user_id The user_id of the user to retrieve
+   * @param username The username of the user to retrieve
    * @returns A Promise that resolves the information of the requested user
    */
-  getUserByUserID(user_id) {
+  getUserByUserID(username) {
     return new Promise((resolve, reject) => {
       try {
         const sql = `SELECT * 
                              FROM User 
-                             WHERE user_id = ?;`;
-        db.get(sql, [user_id], (err, row) => {
+                             WHERE username = ?;`;
+        db.get(sql, [username], (err, row) => {
           if (err) {
             reject(err);
             return;
@@ -102,7 +101,7 @@ class UserDAO {
             reject(new UserNotFound());
             return;
           }
-          resolve(new User(row.user_id, row.name, row.email, row.role));
+          resolve(new User(row.username, row.name, row.email, row.role));
         });
       } catch (error) {
         reject(error);
