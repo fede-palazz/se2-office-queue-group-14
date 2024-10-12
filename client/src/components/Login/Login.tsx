@@ -69,25 +69,29 @@ function Login(props: any) {
     <Container fluid className="LoginContainer">
       <Row>
         <Col>
-          <h2>Login</h2>
+          <h4>Login</h4>
           <Form onSubmit={handleSubmit}>
-            <Form.Group>
-              <Form.Label>Username</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Enter username"
-                onChange={(e) => setUsername(e.target.value)}
-              />
-            </Form.Group>
+            <div className="text_area">
+              <Form.Group>
+                <div className="title"> Username : </div>
+                <Form.Control
+                  type="text"
+                  placeholder="  username  "
+                  onChange={(e) => setUsername(e.target.value)}
+                  className="text_input"
+                />
+              </Form.Group>
 
-            <Form.Group>
-              <Form.Label>Password</Form.Label>
-              <Form.Control
-                type="password"
-                placeholder="Password"
-                onChange={(e) => setPassword(e.target.value)}
-              />
-            </Form.Group>
+              <Form.Group>
+                <div className="title"> Password : </div>
+                <Form.Control
+                  type="password"
+                  placeholder="  Password  "
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="text_input"
+                />
+              </Form.Group>
+            </div>
 
             <Button variant="primary" type="submit">
               Login
