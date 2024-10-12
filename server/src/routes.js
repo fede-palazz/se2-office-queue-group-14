@@ -1,14 +1,12 @@
 import Authenticator from "../auth.js";
 import { AuthRoutes } from "./routes/authRoutes.js";
 import { UserRoutes } from "./routes/userRoutes.js";
-import { TicketRoutes } from "./routes/ticketRoutes.js";
-
 
 const PREFIX = "/officequeue";
 
 function initRoutes(app) {
-  const ticketRoutes = new TicketRoutes();
   const authenticator = new Authenticator(app);
+  const ticketRoutes = new TicketRoutes(authenticator);
   const authRoutes = new AuthRoutes(authenticator);
   const userRoutes = new UserRoutes(authenticator);
 

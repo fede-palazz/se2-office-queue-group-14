@@ -18,7 +18,7 @@ function ticketController() {
             const ticket = await dao.getTicketById(ticketId);
             return ticket;
         } catch (error) {
-            console.log("Debug: error: ", error);
+            
             throw error;
         }
     }

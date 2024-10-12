@@ -5,21 +5,6 @@ function ticketDao() {
     this.db = db;
     this.Ticket = Ticket;
   
-    /**
-     * Example function
-    this.exampleFunction = (params) => {
-      return new Promise((resolve, reject) => {
-        const sql = `sql`;
-        this.db.run(sql, [params], (err) => {
-          if (err) {
-            reject(err);
-            return;
-          }
-          resolve(true);
-        });
-      });
-    };
-    */
    //Generate ticket, no user id required
     
     this.createTicket = async (ticketData) => {
@@ -48,6 +33,10 @@ function ticketDao() {
             this.db.get(sql, [ticketId], (err, row) => {
               if (err) {
                 reject(err);
+                return;
+              }
+              if(row === undefined) {
+                reject(new Error("Ticket not found"));
                 return;
               }
               resolve(row);

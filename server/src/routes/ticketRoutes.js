@@ -3,13 +3,15 @@ import ticketController from "../controllers/ticketController.js";
 import { validateRequest } from "../helpers.js";
 import { param, body } from "express-validator";
 
-function TicketRoutes() {
-    this.router = express.Router();
-    this.ticketController = new ticketController();
+function TicketRoutes(authenticator) {
+  this.router = express.Router();
+  this.ticketController = new ticketController();
+  this.authenticator = authenticator;
 
-    this.getRouter = () => this.router;
+  this.getRouter = () => this.router;
 
     this.initRoutes = function () {
+
         this.router.get("/:id", (req, res, next) => {
           this.ticketController
             .getTicketById(req.params.id)
@@ -17,7 +19,8 @@ function TicketRoutes() {
               res.status(200).send(result);
             })
             .catch((err) => {
-              next(err);
+              err.message = "Ticket not found";
+              res.status(404).send(err);
             });
         });
 
@@ -33,9 +36,7 @@ function TicketRoutes() {
         });
       };
 
-    
       this.initRoutes();
-
 }
 
 export default TicketRoutes;
