@@ -1,6 +1,8 @@
 import Authenticator from "../auth.js";
 import { AuthRoutes } from "./routes/authRoutes.js";
 import { UserRoutes } from "./routes/userRoutes.js";
+import { TicketRoutes } from "./routes/ticketRoutes.js";
+
 
 const PREFIX = "/officequeue";
 
