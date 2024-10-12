@@ -31,18 +31,18 @@ class AuthRoutes {
      * Route for logging in a user.
      * It does not require authentication.
      * It expects the following body parameters:
-     * - user_id: string. It cannot be empty.
+     * - username: string. It cannot be empty.
      * - password: string. It cannot be empty.
-     * It returns an error if the user_id represents a non-existing user or if the password is incorrect.
+     * It returns an error if the username represents a non-existing user or if the password is incorrect.
      * It returns the logged in user.
      */
     this.router.post(
       "/",
-      body("user_id")
+      body("username")
         .notEmpty()
         .withMessage("User_id cannot be empty")
         .isAscii()
-        .withMessage("User_id cannot contain emojis"), // The request body must contain a string non-empty attribute called "user_id"
+        .withMessage("User_id cannot contain emojis"), // The request body must contain a string non-empty attribute called "username"
       body("password")
         .isLength({ min: 6 })
         .withMessage("Password has to be at least 6 characters long")
@@ -53,7 +53,10 @@ class AuthRoutes {
         this.authService
           .login(req, res, next)
           .then((user) => res.status(200).json(user))
-          .catch((err) => next(err))
+          .catch((err) => {
+            console.log(err);
+            next(err);
+          })
     );
 
     /**

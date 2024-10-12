@@ -12,7 +12,7 @@ import {
   UserNotFound,
   UserAlreadyExistsError,
 } from "../../src/errors/userError.js";
-import { Authenticator } from "../../auth.js";
+import Authenticator from "../../auth.js";
 import { validateRequest } from "../../src/helpers.js";
 
 const baseURL = "/officequeue";
@@ -46,7 +46,7 @@ describe("POST /users", () => {
 
   test("It should return a 200 success code", async () => {
     const testUser = {
-      user_id: "test",
+      username: "test",
       name: "test",
       email: "admin@polito.it",
       password: "test",
@@ -71,7 +71,7 @@ describe("POST /users", () => {
 
   test("It should return a 422 error code", async () => {
     const testUser = {
-      user_id: "test",
+      username: "test",
       name: "test",
       email: "admin",
       password: "test",
@@ -92,7 +92,7 @@ describe("POST /users", () => {
 
   test("It should return a 409 error code", async () => {
     const testUser = {
-      user_id: "test",
+      username: "test",
       name: "test",
       surname: "test",
       password: "test",
@@ -121,28 +121,18 @@ describe("POST /users", () => {
     jest.restoreAllMocks();
   });
 });
-/*
+
 describe("POST ezelectronics/sessions", () => {
-  const testBody = { user_id: "admin", password: "password" };
+  const testBody = { username: "admin", password: "123456" };
 
   //Nominal login
 
   test("It should return 200 success code", async () => {
     jest.spyOn(Authenticator.prototype, "login").mockResolvedValue(testAdmin);
 
-    /*jest.mock("express-validator", () => ({
-      body: jest.fn().mockImplementation(() => ({
-        isAscii: () => {},
-        isLenght: () => {},
-        notEmpty: () => {},
-      })),
-    }));
-
-    jest
-      .spyOn(ErrorHandler.prototype, "validateRequest")
-      .mockImplementation((req, res, next) => {
-        return next();
-      });
+    validateRequest.mockImplementation((req, res, next) => {
+      return next();
+    });
 
     const response = await request(app)
       .post(baseURL + "/sessions")
@@ -154,20 +144,13 @@ describe("POST ezelectronics/sessions", () => {
   //Not existing username or wrong password
 
   test("It should return 401 error code", async () => {
-    jest.spyOn(Authenticator.prototype, "login").mockRejectedValue(false);
-
-    /*jest.mock("express-validator", () => ({
-      body: jest.fn().mockImplementation(() => ({
-        isString: () => {},
-        notEmpty: () => {},
-      })),
-    }));
-
     jest
-      .spyOn(ErrorHandler.prototype, "validateRequest")
-      .mockImplementation((req, res, next) => {
-        return next();
-      });
+      .spyOn(Authenticator.prototype, "login")
+      .mockRejectedValue(new UserNotAuthenticated());
+
+    validateRequest.mockImplementation((req, res, next) => {
+      return next();
+    });
 
     const response = await request(app)
       .post(baseURL + "/sessions")
@@ -263,4 +246,4 @@ describe("GET ezelectronics/sessions/current", () => {
     jest.resetAllMocks();
     jest.restoreAllMocks();
   });
-});*/
+});
