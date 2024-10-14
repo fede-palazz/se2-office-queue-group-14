@@ -28,6 +28,41 @@ class CounterController {
     return this.dao.getCounterById(counter_id);
   }
 
+  //assign service to counter
+  async assignServiceToCounter(counter_id, service_id) {
+    return this.dao.assignServiceToCounter(counter_id, service_id);
+  }
+  //update counter name
+  async updateCounterName(counter_id, counter_name) {
+    return this.dao.updateCounterName(counter_id, counter_name);
+  }
+
+  //delete counter
+  async deleteCounter(counter_id) {
+    return this.dao.deleteCounter(counter_id);
+  }
+
+  //delete service from counter
+  async deleteServiceFromCounter(counter_id) {
+    return this.dao.deleteServiceFromCounter(counter_id);
+  }
+
+  //get all services assigned to a counter
+  async getServicesAssignedToCounter(counter_id) {
+    return this.dao.getServicesAssignedToCounter(counter_id);
+  }
+
+  //get total number of counters
+  async getTotalCounters() {
+    return this.dao.getTotalCounters();
+  }
+
+  //delete all services from counter
+  async deleteAllServicesFromCounter(counter_id) {
+    return this.dao.deleteAllServicesFromCounter(counter_id);
+  }
+  
+
   // Additional methods like updateCounter, deleteCounter, getAllCounters can be added similarly
 }
 

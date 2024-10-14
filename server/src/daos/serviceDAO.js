@@ -46,6 +46,76 @@ class ServiceDAO {
     });
   }
 
+  // Update service name
+  updateServiceName(service_id, service_name) {
+    return new Promise((resolve, reject) => {
+      const sql = `UPDATE Service SET service_name = ? WHERE service_id = ?;`;
+      db.run(sql, [service_name, service_id], function (err) {
+        if (err) {
+          reject(err);
+          return;
+        }
+        resolve(true);
+      });
+    });
+  }
+
+  // Update service average time
+  updateServiceAvgTime(service_id, avg_service_time) {
+    return new Promise((resolve, reject) => {
+      const sql = `UPDATE Service SET avg_service_time = ? WHERE service_id = ?;`;
+      db.run(sql, [avg_service_time, service_id], function (err) {
+        if (err) {
+          reject(err);
+          return;
+        }
+        resolve(true);
+      });
+    });
+  }
+
+  // Delete service
+  deleteService(service_id) {
+    return new Promise((resolve, reject) => {
+      const sql = `DELETE FROM Service WHERE service_id = ?;`;
+      db.run(sql, [service_id], function (err) {
+        if (err) {
+          reject(err);
+          return;
+        }
+        resolve(true);
+      });
+    });
+  }
+
+  // Get all counters assigned to a service
+  getCountersAssignedToService(service_id) {
+    return new Promise((resolve, reject) => {
+      const sql = `SELECT counter_id FROM CounterService WHERE service_id = ?;`;
+      db.all(sql, [service_id], (err, rows) => {
+        if (err) {
+          reject(err);
+          return;
+        }
+        resolve(rows.map((row) => row.counter_id));
+      });
+    });
+  }
+
+  // Get all services
+  getAllServices() {
+    return new Promise((resolve, reject) => {
+      const sql = `SELECT * FROM Service;`;
+      db.all(sql, [], (err, rows) => {
+        if (err) {
+          reject(err);
+          return;
+        }
+        resolve(rows.map((row) => new Service(row.service_id, row.service_name, row.avg_service_time)));
+      });
+    });
+  }
+
   // Other methods like updateService, deleteService can be added similarly.
 }
 

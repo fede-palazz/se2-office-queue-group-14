@@ -29,6 +29,32 @@ class ServiceController {
     return this.dao.getServiceById(service_id);
   }
   
+  //update service name
+  async updateServiceName(service_id, service_name) {
+    return this.dao.updateServiceName(service_id, service_name);
+  }
+
+  //update service average time
+  async updateServiceAvgTime(service_id, avg_service_time) {
+    return this.dao.updateServiceAvgTime(service_id, avg_service_time);
+  }
+
+  //delete service
+  async deleteService(service_id) {
+    return this.dao.deleteService(service_id);
+  }
+
+  //get all counters assigned to a service
+  async getCountersAssignedToService(service_id) {
+    return this.dao.getCountersAssignedToService(service_id);
+  }
+
+  // get all services
+  async getAllServices() {
+    return this.dao.getAllServices(); 
+  } 
+  
+
   // Additional methods like updateService, deleteService, getAllServices can be added similarly
 }
 

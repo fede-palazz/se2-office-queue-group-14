@@ -45,6 +45,108 @@ class CounterDAO {
     });
   }
 
+  //assign service to counter
+  assignServiceToCounter(counter_id, service_id) {
+    return new Promise((resolve, reject) => {
+      const sql = `INSERT INTO CounterService(counter_id, service_id) 
+                   VALUES(?, ?);`;
+      db.run(sql, [counter_id, service_id], function (err) {
+        if (err) {
+          reject(err);
+          return;
+        }
+        resolve(true);
+      });
+    });
+  }
+
+  //update counter name
+  updateCounterName(counter_id, counter_name) {
+    return new Promise((resolve, reject) => {
+      const sql = `UPDATE Counter SET counter_name = ? WHERE counter_id = ?;`;
+      db.run(sql, [counter_name, counter_id], function (err) {
+        if (err) {
+          reject(err);
+          return;
+        }
+        resolve(true);
+      });
+    });
+  }
+
+  //delete counter
+  deleteCounter(counter_id) {
+    return new Promise((resolve, reject) => {
+      const sql = `DELETE FROM Counter WHERE counter_id = ?;`;
+      db.run(sql, [counter_id], function (err) {
+        if (err) {
+          reject(err);
+          return;
+        }
+        resolve(true);
+      });
+    });
+  }
+
+  //delete service from counter
+  deleteServiceFromCounter(counter_id) {
+    return new Promise((resolve, reject) => {
+      const sql = `DELETE FROM CounterService WHERE counter_id = ?;`;
+      db.run(sql, [counter_id], function (err) {
+        if (err) {
+          reject(err);
+          return;
+        }
+        resolve(true);
+      }); 
+    });
+  }
+
+  //get all services assigned to a counter
+  getServicesAssignedToCounter(counter_id) {
+    return new Promise((resolve, reject) => {
+      const sql = `SELECT service_id FROM CounterService WHERE counter_id = ?;`;
+      db.all(sql, [counter_id], (err, rows) => {
+        if (err) {
+          reject(err);
+          return;
+        }
+        resolve(rows.map((row) => row.service_id));
+      });
+    });
+  }
+
+  //get total number of counters
+  getTotalCounters() {
+    return new Promise((resolve, reject) => {
+      const sql = `SELECT COUNT(*) AS total FROM Counter;`;
+      db.get(sql, (err, row) => {
+        if (err) {
+          reject(err);
+          return;
+        }
+        resolve(row.total);
+      });
+    });
+  }
+
+  //delete all services from counter
+  deleteAllServicesFromCounter(counter_id) {
+    return new Promise((resolve, reject) => {
+      const sql = `DELETE FROM CounterService WHERE counter_id = ?;`;
+      db.run(sql, [counter_id], function (err) {
+        if (err) {
+          reject(err);
+          return;
+        }
+        resolve(true);
+      });
+    });
+  }
+  
+
+    
+
   // Other methods like updateCounter, deleteCounter can be added similarly.
 }
 
