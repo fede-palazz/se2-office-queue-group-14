@@ -1,10 +1,13 @@
 import "./App.css";
 import { Login } from "./components/Login/Login";
-import {Container}from 'react-bootstrap'
+import {Button, Container}from 'react-bootstrap'
 import { Routes, Route } from 'react-router-dom'
 import { Navigate, useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import API from './API/API.ts'
+
+import { UserInfo } from "./Models/user.ts";
+import { ROLES, User, UserContext } from './components/Login/UserContext';
 
 
 function App() {
@@ -12,32 +15,33 @@ function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [loginMessage, setLoginMessage] = useState('');
   const [isLoaded, setIsLoaded] = useState(false)
-  const [user, setUser] = useState(null)
+  const [user, setUser] = useState(undefined)
   const navigate = useNavigate();
 
   useEffect(() => {
     const checkAuth = async () => {
         try {
+            if(user === undefined) { throw new Error("User not found") }
             const u = await API.getUserInfo()
             console.log(u)
+            setUser(new User(u.username, u.name, u.email, u.role))
             setLoggedIn(true);
             setIsLoaded(true)
-            navigate("/")
         } catch {
             setLoggedIn(false);
-            setUser(null)
+            setUser(undefined)
             setIsLoaded(true)
         }
     };
 
     checkAuth();
-  }, []);
+  }, [navigate]);
 
   const dologin = function (username , password) {
     API.login(username, password)
         .then((u) => {
             setLoggedIn(true)
-            //setUser(u)
+            setUser(new UserInfo(u.username, u.role))
             setIsLoaded(true)
             navigate('/')
         })
@@ -56,8 +60,20 @@ function App() {
       <Route path="/"
           element={loggedIn ? <Navigate to="/home" /> : <Navigate to="/login" />}
       />
-
-      <Route path="/home"> Home </Route>
+      <Route path="/home" element={ loggedIn ?
+               <>
+                <h1>Welcome, {user?.username}</h1>
+                <p>Role: {user?.role}</p>
+                <Button onClick={() => {
+                    API.logOut().then(() => {
+                        setLoggedIn(false);
+                        setUser(undefined)
+                        navigate('/login')
+                    })
+                }}>Logout</Button>
+               </> 
+                : <Navigate to="/login" />}
+        />  
       </Routes>
     </Container>
   );
