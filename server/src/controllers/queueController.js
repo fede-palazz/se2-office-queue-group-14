@@ -16,8 +16,8 @@ class QueueController {
    * @param ticket_id - The ID of the ticket in the queue.
    * @returns A Promise that resolves to true if the queue entry has been added.
    */
-  async addToQueue(queue_id, service_id, ticket_id) {
-    return this.dao.addToQueue(queue_id, service_id, ticket_id);
+  async addToQueue(service_id, ticket_id) {
+    return this.dao.addToQueue(service_id, ticket_id);
   }
 
   /**

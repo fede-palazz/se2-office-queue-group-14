@@ -27,7 +27,7 @@ function CounterRoutes(authenticator) {
         //Body needs this fields: counter_id, counter_name
         this.router.post("/", (req, res, next) => {
         this.counterController
-            .createCounter(req.body)
+            .createCounter(req.body.counter_id, req.body.counter_name)
             .then((result) => {
             res.status(200).send(result);
             })
@@ -39,7 +39,7 @@ function CounterRoutes(authenticator) {
         //Change counterId , counterName
         this.router.put("/", (req, res, next) => {
         this.counterController
-            .updateCounter(req.body)
+            .updateCounter(req.body.counter_id, req.body.counter_name)
             .then((result) => {
             res.status(200).send(result);
             })
@@ -63,7 +63,7 @@ function CounterRoutes(authenticator) {
         // Assign service to counter, needs counterId, serviceId
         this.router.post("/assignService", (req, res, next) => {
         this.counterController
-            .assignServiceToCounter(req.body)
+            .assignServiceToCounter(req.body.counter_id, req.body.service_id)
             .then((result) => {
             res.status(200).send(result);
             })

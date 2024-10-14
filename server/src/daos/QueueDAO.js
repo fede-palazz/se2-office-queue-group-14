@@ -25,25 +25,46 @@ class QueueDAO {
 
   /**
    * Retrieves the next ticket in the queue for a specific service.
+   * Needs to change the ticket state to "in_progress" in the ticket table.
    * @param service_id The service ID for which to retrieve the next ticket.
-   * @returns A Promise that resolves to the next ticket in the queue.
+   * @returns next ticket_id in the queue.
    */
-  getNextTicket(service_id) {
-    return new Promise((resolve, reject) => {
-      const sql = `SELECT ticket_id FROM Queue WHERE service_id = ? ORDER BY queue_id LIMIT 1;`;
-      db.get(sql, [service_id], (err, row) => {
-        if (err) {
-          reject(err);
-          return;
-        }
-        if (!row) {
-          reject(new QueueNotFound());
-          return;
-        }
-        resolve(row.ticket_id);
+  async getNextTicket(service_id) {
+    const getNextTicketSql = `SELECT ticket_id FROM Queue WHERE service_id = ? ORDER BY id LIMIT 1;`;
+    const updateTicketStateSql = `UPDATE Ticket SET state = 'in_progress' WHERE id = ?;`;
+
+    try {
+      const row = await new Promise((resolve, reject) => {
+        db.get(getNextTicketSql, [service_id], (err, row) => {
+          if (err) {
+            reject(err);
+            return;
+          }
+          resolve(row);
+        });
       });
-    });
+
+      if (!row) {
+        throw new QueueNotFound(`No tickets found for service ID ${service_id}`);
+      }
+
+      await new Promise((resolve, reject) => {
+        db.run(updateTicketStateSql, [row.ticket_id], (err) => {
+          if (err) {
+            reject(err);
+            return;
+          }
+          resolve();
+        });
+      });
+
+      return row.ticket_id;
+    } catch (err) {
+      throw err;
+    }
   }
+
+  
 
   // Other methods like removeFromQueue, getQueueLength can be added similarly.
 }

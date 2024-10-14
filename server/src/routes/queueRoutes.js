@@ -11,14 +11,16 @@ function QueueRoutes(authenticator) {
     this.getRouter = () => this.router;
     
     this.initRoutes = function () {
+
+        // Add a ticket to the queue
+        //  GET TICKET STORY
         this.router.post("/add", [
-            body("queue_id").isString(),
             body("service_id").isString(),
             body("ticket_id").isString(),
             validateRequest,
             ], (req, res, next) => {
         this.queueController
-            .addToQueue(req.body.queue_id, req.body.service_id, req.body.ticket_id)
+            .addToQueue(req.body.service_id, req.body.ticket_id)
             .then((result) => {
             res.status(200).send(result);
             })
@@ -27,6 +29,8 @@ function QueueRoutes(authenticator) {
             });
         });
     
+        // Get the next ticket in the queue
+        //  NEXT CUSTOMER STORY
         this.router.get("/next/:service_id", (req, res, next) => {
         this.queueController
             .getNextTicket(req.params.service_id)

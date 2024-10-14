@@ -34,7 +34,7 @@ function ServiceRoutes(authenticator) {
             ,
             (req, res, next) => {
             this.serviceController
-                .createService(req.body)
+                .createService(req.body.serviceId, req.body.serviceName, req.body.avg_service_time)
                 .then((result) => {
                     res.status(200).send(result);
                 })
@@ -50,7 +50,7 @@ function ServiceRoutes(authenticator) {
             ]
             ,(req, res, next) => {
             this.serviceController
-                .updateService(req.body)
+                .updateService(req.body.serviceId, req.body.serviceName)
                 .then((result) => {
                     res.status(200).send(result);
                 })
@@ -89,12 +89,12 @@ function ServiceRoutes(authenticator) {
 
         // add service time to update the average service time
         this.router.post("/addServiceTime",
-            [body("service_id").isString(),
+            [body("serviceId").isString(),
             body("service_time").isString(),
             ]
             ,(req, res, next) => {
             this.serviceController
-                .addServiceTime(req.body)
+                .addServiceTime(req.body.serviceId, req.body.service_time)
                 .then((result) => {
                     res.status(200).send(result);
                 })

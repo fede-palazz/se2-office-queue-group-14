@@ -1,5 +1,5 @@
 
-import ServiceDAO from "../daos/serviceDAO";
+import ServiceDAO from '../daos/serviceDAO.js';
 /**
  * Represents a controller for managing services.
  * All methods of this class must interact with the corresponding DAO class to retrieve or store data.

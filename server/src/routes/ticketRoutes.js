@@ -24,9 +24,11 @@ function TicketRoutes(authenticator) {
             });
         });
 
+        // Create a new ticket.
+        // Body needs this fields: ticket_code, service_id
         this.router.post("/", (req, res, next) => {
           this.ticketController
-            .createTicket(req.body)
+            .createTicket(req.body.ticket_code, req.body.service_id)
             .then((result) => {
               res.status(200).send(result);
             })
@@ -35,6 +37,20 @@ function TicketRoutes(authenticator) {
             });
         });
       };
+
+      // CHange ticket status to custom status
+      this.router.put("/:id",
+        [body("status").isString()],
+        (req, res, next) => {
+        this.ticketController
+          .changeTicketStatus(req.params.id, body.status)
+          .then((result) => {
+            res.status(200).send(result);
+          })
+          .catch((err) => {
+            res.send("Error here: ", err);
+          });
+      });
 
       this.initRoutes();
 }
