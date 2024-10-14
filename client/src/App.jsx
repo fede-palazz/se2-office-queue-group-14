@@ -6,7 +6,6 @@ import { Navigate, useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import API from './API/API.ts'
 
-import { UserInfo } from "./Models/user.ts";
 import { ROLES, User, UserContext } from './components/Login/UserContext';
 
 
@@ -41,7 +40,7 @@ function App() {
     API.login(username, password)
         .then((u) => {
             setLoggedIn(true)
-            setUser(new UserInfo(u.username, u.role))
+            setUser(new User(u.username, u.name, u.email, u.role))
             setIsLoaded(true)
             navigate('/')
         })
