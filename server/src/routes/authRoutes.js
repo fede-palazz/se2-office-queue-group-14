@@ -44,7 +44,7 @@ class AuthRoutes {
         .isAscii()
         .withMessage("User_id cannot contain emojis"), // The request body must contain a string non-empty attribute called "username"
       body("password")
-        .isLength({ min: 6 })
+        .isLength({ min: 3 })
         .withMessage("Password has to be at least 6 characters long")
         .isAscii()
         .withMessage("Password cannot contain emojis"), // The request body must contain a string non-empty attribute called "password"
