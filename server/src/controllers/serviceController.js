@@ -39,6 +39,11 @@ class ServiceController {
     return this.dao.updateServiceAvgTime(service_id, avg_service_time);
   }
 
+  // add service time to update the average service time
+  async addServiceTime(service_id, service_time) {
+    return this.dao.addServiceTime(service_id, service_time);
+  }
+
   //delete service
   async deleteService(service_id) {
     return this.dao.deleteService(service_id);
