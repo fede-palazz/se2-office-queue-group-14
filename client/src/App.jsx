@@ -5,6 +5,8 @@ import { Routes, Route } from "react-router-dom";
 import { Navigate, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import API from "./API/API.ts";
+import { Manager } from "./components/Manager/Manager.tsx";
+import "bootstrap/dist/css/bootstrap.css";
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -54,7 +56,7 @@ function App() {
   };
 
   return (
-    <Container fluid style={{ padding: 0 }}>
+    <Container fluid style={{ padding: "0", height: "100%" }}>
       <Routes>
         <Route
           path="/login"
@@ -73,6 +75,10 @@ function App() {
             loggedIn ? <Navigate to="/home" /> : <Navigate to="/login" />
           }
         />
+        <Route path="/manager" element={<Manager />}>
+          {" "}
+          Login{" "}
+        </Route>
 
         <Route path="/home"> Home </Route>
       </Routes>
