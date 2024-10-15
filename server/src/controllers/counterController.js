@@ -61,7 +61,6 @@ class CounterController {
   async deleteAllServicesFromCounter(counter_id) {
     return this.dao.deleteAllServicesFromCounter(counter_id);
   }
-  
 
   // Additional methods like updateCounter, deleteCounter, getAllCounters can be added similarly
 }

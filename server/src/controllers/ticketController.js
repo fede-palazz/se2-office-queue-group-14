@@ -1,4 +1,4 @@
-import ticketDAO from "../daos/ticketDao.js";
+import ticketDAO from "../daos/ticketDAO.js";
 
 function ticketController() {
   const dao = new ticketDAO();
