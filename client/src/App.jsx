@@ -65,7 +65,15 @@ function App() {
       setUser(undefined);
       navigate("/login");
     });
-  }
+  };
+
+  const redirect = function () {
+    if ( user.role.toLowerCase() === ROLES.MANAGER) {
+      navigate("/manager");
+    } else {
+      navigate("/home");
+    }
+  };
 
   return (
     <Container fluid style={{ padding: "0", height: "100%" }}>
@@ -88,8 +96,6 @@ function App() {
           }
         />
         <Route path="/manager" element={<Manager />}>
-          {" "}
-          Login{" "}
         </Route>
 
         <Route path="/home" 
@@ -98,6 +104,7 @@ function App() {
             <div>
               Welcome, {user.name} ({user.role})
             </div>
+            <button className="btn" onClick={redirect}>Go to my page</button>
             <button className="btn btn-danger" onClick={doLogout}>
               Logout
             </button>

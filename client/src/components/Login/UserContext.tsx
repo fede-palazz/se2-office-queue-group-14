@@ -18,9 +18,9 @@ class User {
 
 
 enum ROLES {
-    MANAGER = "Manager",
-    CUSTOMER = "Customer",
-    ADMIN = "Admin"
+    MANAGER = "manager",
+    CUSTOMER = "customer",
+    ADMIN = "admin"
 }
 
 export { UserContext, User, ROLES }
