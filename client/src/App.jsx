@@ -8,36 +8,38 @@ import API from "./API/API.ts";
 import { Manager } from "./components/Manager/Manager.tsx";
 import "bootstrap/dist/css/bootstrap.css";
 
+import {UserInfo, Role} from "./models/User.ts";
+
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [loginMessage, setLoginMessage] = useState("");
   const [isLoaded, setIsLoaded] = useState(false);
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(undefined);
   const navigate = useNavigate();
 
   useEffect(() => {
     const checkAuth = async () => {
       try {
         const u = await API.getUserInfo();
-        console.log(u);
+        setUser(new UserInfo(u.username, u.name, u.email, u.role));
         setLoggedIn(true);
         setIsLoaded(true);
         navigate("/");
       } catch {
         setLoggedIn(false);
-        setUser(null);
+        setUser(undefined);
         setIsLoaded(true);
       }
     };
 
     checkAuth();
-  }, [navigate]);
+  }, []);
 
   const dologin = function (username, password) {
     API.login(username, password)
       .then((u) => {
         setLoggedIn(true);
-        //setUser(u)
+        setUser(new UserInfo(u.username, u.name, u.email, u.role));
         setIsLoaded(true);
         navigate("/");
       })
@@ -54,6 +56,14 @@ function App() {
         );
       });
   };
+
+  const doLogout = function () {
+    API.logOut().then(() => {
+      setLoggedIn(false);
+      setUser(undefined);
+      navigate("/login");
+    });
+  }
 
   return (
     <Container fluid style={{ padding: "0", height: "100%" }}>
@@ -80,7 +90,19 @@ function App() {
           Login{" "}
         </Route>
 
-        <Route path="/home"> Home </Route>
+        <Route path="/home" 
+        element = {loggedIn && (
+          <div className="d-flex justify-content-between align-items-center p-3 bg-light">
+            <div>
+              Welcome, {user.name} ({user.role})
+            </div>
+            <button className="btn btn-danger" onClick={doLogout}>
+              Logout
+            </button>
+          </div>
+          )}
+        />
+          
       </Routes>
     </Container>
   );

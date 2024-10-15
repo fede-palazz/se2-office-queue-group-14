@@ -4,10 +4,8 @@
 class UserInfo {
     username: string
     name: string
-    surname: string
     role: Role
-    address: string
-    birthdate: string
+    email: string
 
     /**
      * Creates a new instance of the User class.
@@ -16,13 +14,11 @@ class UserInfo {
      * @param surname - The surname of the user.
      * @param role - The role of the user. This can be "Manager" or "Customer".
      */
-    constructor(username: string, name: string, surname: string, role: Role, address: string, birthdate: string) {
+    constructor(username: string, name: string, email: string, role: Role) {
         this.username = username
         this.name = name
-        this.surname = surname
+        this.email = email
         this.role = role
-        this.address = address
-        this.birthdate = birthdate
     }
 }
 
