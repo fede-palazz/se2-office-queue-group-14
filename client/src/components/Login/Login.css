@@ -1,88 +1,57 @@
-body {
-  background: linear-gradient(135deg, #fafafa, #aeaeae);
-  height: 100vh;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 0;
-}
-
-.login {
+.LoginContainer {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background: #dfd1d1;
+  background: #ffffff;
   width: 434px;
   padding: 20px;
   border-radius: 22px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
-h4 {
-  font-family: "Segoe UI", bold;
-  font-size: 35px;
-  margin-top: 4rem;
-  margin-bottom: 2rem;
-  text-align: center;
-}
-
-form {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-}
 .text_area {
   align-content: center;
   border-radius: 22px;
   margin-bottom: 35px;
   width: 100%;
-  height: 200px;
-  box-shadow: 0 0 16px 0 rgba(0, 0, 0, 0.2),
-    0 0 40px 0 rgba(213, 202, 202, 0.19);
+  height: 64px;
 }
 
 .text_input {
   margin-top: 1.2rem;
-  margin-left: 1.5rem;
-  margin-bottom: 0.5rem;
-  border-radius: 22px;
   font-family: "Montserrat regular";
   font-size: 20px;
   border: none;
   width: 80%;
-  box-shadow: 0 0 16px 0 rgba(0, 0, 0, 0.2),
-    0 0 40px 0 rgba(213, 202, 202, 0.19);
-}
-
-.title {
-  margin-left: 0.5rem;
-  font-family: "Montserrat";
-  font-size: 17px;
-  margin-bottom: 10px;
+  padding-left: 10px;
+  box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.2), 0 0 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 .btn {
   margin-top: 28px;
-  width: 150px;
-  height: 50px;
+  width: 165px;
+  height: 60px;
   border-radius: 30px;
-  background: #7f7272;
+  background: #6d6a6a;
   border: none;
   font-family: "Montserrat";
   font-size: 20px;
   color: #ffffff;
-  box-shadow: 0 4px 8px 0 #6a5f5eb3, 0 6px 20px 0 #595959e6;
+  box-shadow: 0 4px 8px 0 #525252b3, 0 6px 20px 0 #595959e6;
   cursor: pointer;
 }
 
 .link {
-  color: #0e4579;
+  color: #0075e2;
   font-family: "Montserrat light";
   font-size: 18px;
   cursor: pointer;
-  display: block;
-  text-decoration: none;
+  display: inline-block;
+  text-decoration: underline;
+}
+
+.signup-link {
+  margin-top: 20px;
+  text-align: center;
 }

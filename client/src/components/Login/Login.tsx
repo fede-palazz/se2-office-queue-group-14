@@ -69,81 +69,98 @@ function Login(props: any) {
     <Container fluid className="LoginContainer">
       <Row>
         <Col>
-          <h4>Login</h4>
-          <Form onSubmit={handleSubmit}>
-            <div className="text_area">
-              <Form.Group>
-                <div className="title"> Username : </div>
-                <Form.Control
-                  type="text"
-                  placeholder="  username  "
-                  onChange={(e) => setUsername(e.target.value)}
-                  className="text_input"
-                />
-              </Form.Group>
+          {!showRegister ? (
+            <>
+              <h4>Login</h4>
+              <Form onSubmit={handleSubmit}>
+                <div className="text_area">
+                  <Form.Group>
+                    <div className="title"> Username : </div>
+                    <Form.Control
+                      type="text"
+                      placeholder="  username  "
+                      onChange={(e) => setUsername(e.target.value)}
+                    />
+                  </Form.Group>
 
-              <Form.Group>
-                <div className="title"> Password : </div>
-                <Form.Control
-                  type="password"
-                  placeholder="  Password  "
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="text_input"
-                />
-              </Form.Group>
-            </div>
+                  <Form.Group>
+                    <div className="title"> Password : </div>
+                    <Form.Control
+                      type="password"
+                      placeholder="  Password  "
+                      onChange={(e) => setPassword(e.target.value)}
+                    />
+                  </Form.Group>
+                </div>
 
-            <Button variant="primary" type="submit">
-              Login
-            </Button>
-          </Form>
+                <Button variant="primary" type="submit">
+                  Login
+                </Button>
+              </Form>
+              <div className="signup-link">
+                <p>
+                  You don't have an account?{" "}
+                  <span onClick={() => setShowRegister(true)} className="link">
+                    Sign up
+                  </span>
+                </p>
+              </div>
+            </>
+          ) : (
+            <>
+              <h2>Register</h2>
+              <Form onSubmit={handleRegister}>
+                <Form.Group>
+                  <Form.Label>Name</Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="Enter name"
+                    onChange={(e) => setName(e.target.value)}
+                  />
+                </Form.Group>
+
+                <Form.Group>
+                  <Form.Label>Username</Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="Enter username"
+                    onChange={(e) => setUsername(e.target.value)}
+                  />
+                </Form.Group>
+
+                <Form.Group>
+                  <Form.Label>Password</Form.Label>
+                  <Form.Control
+                    type="password"
+                    placeholder="Password"
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
+                </Form.Group>
+
+                <Form.Group>
+                  <Form.Label>Repeat Password</Form.Label>
+                  <Form.Control
+                    type="password"
+                    placeholder="Repeat Password"
+                    onChange={(e) => setRepeatPassword(e.target.value)}
+                  />
+                </Form.Group>
+
+                <Button variant="primary" type="submit">
+                  Register
+                </Button>
+              </Form>
+              <div className="signup-link">
+                <p>
+                  Already have an account?{" "}
+                  <span onClick={() => setShowRegister(false)} className="link">
+                    Login
+                  </span>
+                </p>
+              </div>
+            </>
+          )}
         </Col>
-        {showRegister && (
-          <Col>
-            <h2>Register</h2>
-            <Form onSubmit={handleRegister}>
-              <Form.Group>
-                <Form.Label>Name</Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="Enter name"
-                  onChange={(e) => setName(e.target.value)}
-                />
-              </Form.Group>
-
-              <Form.Group>
-                <Form.Label>Username</Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="Enter username"
-                  onChange={(e) => setUsername(e.target.value)}
-                />
-              </Form.Group>
-
-              <Form.Group>
-                <Form.Label>Password</Form.Label>
-                <Form.Control
-                  type="password"
-                  placeholder="Password"
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-              </Form.Group>
-
-              <Form.Group>
-                <Form.Label>Repeat Password</Form.Label>
-                <Form.Control
-                  type="password"
-                  placeholder="Repeat Password"
-                  onChange={(e) => setRepeatPassword(e.target.value)}
-                />
-              </Form.Group>
-
-              <Button variant="primary" type="submit">
-                Register
-              </Button>
-            </Form>
-          </Col>
-        )}
       </Row>
       {props.message && <Alert variant="danger">{props.message}</Alert>}
     </Container>

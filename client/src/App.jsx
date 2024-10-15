@@ -31,7 +31,7 @@ function App() {
     };
 
     checkAuth();
-  }, []);
+  }, [navigate]);
 
   const dologin = function (username, password) {
     API.login(username, password)
