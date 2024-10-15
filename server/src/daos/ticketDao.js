@@ -7,13 +7,15 @@ function ticketDao() {
   
    //Generate ticket, no user id required
     
-    this.createTicket = async (ticketData) => {
+    this.createTicket = async (ticket_code, service_id) => {
      try {
           const newTicket = {
-                ...ticketData,
+                ticket_code: ticket_code,
+                service_id: service_id,
+                ticket_status: "waiting",
                 issue_time: new Date(),
           };
-          const sql = `INSERT INTO ticket (issue_time, user_id, ticket_status, ticket_type) VALUES (?, ?, ?, ?)`;
+          const sql = `INSERT INTO ticket (ticket_code, service_id, ticket_status, issue_time) VALUES (?, ?, ?, ?)`;
           const result = await this.db.run(sql, [ticketData.issue_time, ticketData.user_id, ticketData.ticket_status, ticketData.ticket_type]);
           newTicket.ticket_id = result.insertId; // Assuming `insertId` contains the auto-incremented ID
           return new Ticket(newTicket);
@@ -40,6 +42,22 @@ function ticketDao() {
                 return;
               }
               resolve(row);
+            });
+          });
+    }
+
+    //Update ticket status changeTicketStatus(ticketId, status)
+    this.changeTicketStatus = async (ticketId, status) => {
+          // Update ticket status in the database
+          // using a Promise
+          return new Promise((resolve, reject) => {
+            const sql = `UPDATE ticket SET ticket_status = ? WHERE ticket_id = ?`;
+            this.db.run(sql, [status, ticketId], (err) => {
+              if (err) {
+                reject(err);
+                return;
+              }
+              resolve(true);
             });
           });
     }

@@ -1,5 +1,5 @@
 
-import ServiceDAO from "../daos/serviceDAO";
+import ServiceDAO from '../daos/serviceDAO.js';
 /**
  * Represents a controller for managing services.
  * All methods of this class must interact with the corresponding DAO class to retrieve or store data.
@@ -37,6 +37,11 @@ class ServiceController {
   //update service average time
   async updateServiceAvgTime(service_id, avg_service_time) {
     return this.dao.updateServiceAvgTime(service_id, avg_service_time);
+  }
+
+  // add service time to update the average service time
+  async addServiceTime(service_id, service_time) {
+    return this.dao.addServiceTime(service_id, service_time);
   }
 
   //delete service

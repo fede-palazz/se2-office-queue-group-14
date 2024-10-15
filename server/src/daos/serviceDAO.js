@@ -46,6 +46,20 @@ class ServiceDAO {
     });
   }
 
+  //add service time to update the average service time
+  addServiceTime(service_id, service_time) {
+    return new Promise((resolve, reject) => {
+      const sql = `UPDATE Service SET avg_service_time = (avg_service_time + ?) WHERE service_id = ?;`;
+      db.run(sql, [service_time, service_id], function (err) {
+        if (err) {
+          reject(err);
+          return;
+        }
+        resolve(true);
+      });
+    });
+  }
+
   // Update service name
   updateServiceName(service_id, service_name) {
     return new Promise((resolve, reject) => {
