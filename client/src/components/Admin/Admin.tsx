@@ -1,6 +1,7 @@
 import React from "react";
 import "./Admin.css";
 import { useNavigate } from "react-router-dom";
+import TopBar from "../Navigation/TopBar";
 
 function Admin() {
   return (
@@ -11,10 +12,7 @@ function Admin() {
       <div className="counter-grid">
         <Counter title="Counter 1" services={["send/receive package"]} />
         <Counter title="Counter 2" services={["send/receive letter"]} />
-        <Counter
-          title="Counter 3"
-          services={["send/receive package", "send/receive letter"]}
-        />
+        <Counter title="Counter 3" services={["send/receive package", "send/receive letter"]} />
         <Counter title="Counter 4" services={["bill payment"]} />
       </div>
     </div>

@@ -1,26 +1,25 @@
-import React from "react"
+import React from "react";
 
-const UserContext = React.createContext<User | undefined>(undefined)
+const UserContext = React.createContext<User | undefined>(undefined);
 
 class User {
-    username: string
-    name: string
-    email: string
-    role: string
+  username: string;
+  name: string;
+  email: string;
+  role: string;
 
-    constructor(username: string, name: string, email: string, role: string) {
-        this.username = username
-        this.name = name
-        this.email = email
-        this.role = role
-    }
+  constructor(username: string, name: string, email: string, role: string) {
+    this.username = username;
+    this.name = name;
+    this.email = email;
+    this.role = role;
+  }
 }
-
 
 enum ROLES {
-    MANAGER = "manager",
-    CUSTOMER = "customer",
-    ADMIN = "admin"
+  MANAGER = "Manager",
+  OFFICER = "Officer",
+  ADMIN = "Admin",
 }
 
-export { UserContext, User, ROLES }
+export { UserContext, User, ROLES };
