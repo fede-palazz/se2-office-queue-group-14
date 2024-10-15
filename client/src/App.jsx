@@ -5,7 +5,8 @@ import { Routes, Route } from "react-router-dom";
 import { Navigate, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import API from "./API/API.ts";
-import { Manager } from "./components/Manager/Manager.tsx";
+import Admin from "./components/Admin/Admin.tsx";
+import { EditServices } from "./components/Admin/EditServices.tsx";
 import "bootstrap/dist/css/bootstrap.css";
 
 function App() {
@@ -75,12 +76,10 @@ function App() {
             loggedIn ? <Navigate to="/home" /> : <Navigate to="/login" />
           }
         />
-        <Route path="/manager" element={<Manager />}>
-          {" "}
-          Login{" "}
-        </Route>
 
         <Route path="/home"> Home </Route>
+        <Route path="/admin" element={<Admin />} />
+        <Route path="/edit-services" element={<EditServices />} />
       </Routes>
     </Container>
   );
