@@ -9,36 +9,38 @@ import Admin from "./components/Admin/Admin.tsx";
 import { EditServices } from "./components/Admin/EditServices.tsx";
 import "bootstrap/dist/css/bootstrap.css";
 
+import { ROLES, User, UserContext } from "./components/Login/UserContext";
+
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [loginMessage, setLoginMessage] = useState("");
   const [isLoaded, setIsLoaded] = useState(false);
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(undefined);
   const navigate = useNavigate();
 
   useEffect(() => {
     const checkAuth = async () => {
       try {
         const u = await API.getUserInfo();
-        console.log(u);
+        setUser(new User(u.username, u.name, u.email, u.role));
         setLoggedIn(true);
         setIsLoaded(true);
         navigate("/");
       } catch {
         setLoggedIn(false);
-        setUser(null);
+        setUser(undefined);
         setIsLoaded(true);
       }
     };
 
     checkAuth();
-  }, [navigate]);
+  }, []);
 
   const dologin = function (username, password) {
     API.login(username, password)
       .then((u) => {
         setLoggedIn(true);
-        //setUser(u)
+        setUser(new User(u.username, u.name, u.email, u.role));
         setIsLoaded(true);
         navigate("/");
       })
@@ -54,6 +56,22 @@ function App() {
             : "An error occurred"
         );
       });
+  };
+
+  const doLogout = function () {
+    API.logOut().then(() => {
+      setLoggedIn(false);
+      setUser(undefined);
+      navigate("/login");
+    });
+  };
+
+  const redirect = function () {
+    if (user.role.toLowerCase() === ROLES.MANAGER) {
+      navigate("/manager");
+    } else {
+      navigate("/home");
+    }
   };
 
   return (
@@ -77,9 +95,27 @@ function App() {
           }
         />
 
-        <Route path="/home"> Home </Route>
         <Route path="/admin" element={<Admin />} />
         <Route path="/edit-services" element={<EditServices />} />
+
+        <Route
+          path="/home"
+          element={
+            loggedIn && (
+              <div className="d-flex justify-content-between align-items-center p-3 bg-light">
+                <div>
+                  Welcome, {user.name} ({user.role})
+                </div>
+                <button className="btn" onClick={redirect}>
+                  Go to my page
+                </button>
+                <button className="btn btn-danger" onClick={doLogout}>
+                  Logout
+                </button>
+              </div>
+            )
+          }
+        />
       </Routes>
     </Container>
   );
