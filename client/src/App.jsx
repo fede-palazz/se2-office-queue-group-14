@@ -8,7 +8,7 @@ import API from "./API/API.ts";
 import { Manager } from "./components/Manager/Manager.tsx";
 import "bootstrap/dist/css/bootstrap.css";
 
-import {UserInfo, Role} from "./models/User.ts";
+import { ROLES, User, UserContext } from './components/Login/UserContext';
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -17,11 +17,13 @@ function App() {
   const [user, setUser] = useState(undefined);
   const navigate = useNavigate();
 
+  
+
   useEffect(() => {
     const checkAuth = async () => {
       try {
         const u = await API.getUserInfo();
-        setUser(new UserInfo(u.username, u.name, u.email, u.role));
+        setUser(new User(u.username, u.name, u.email, u.role));
         setLoggedIn(true);
         setIsLoaded(true);
         navigate("/");
@@ -39,7 +41,7 @@ function App() {
     API.login(username, password)
       .then((u) => {
         setLoggedIn(true);
-        setUser(new UserInfo(u.username, u.name, u.email, u.role));
+        setUser(new User(u.username, u.name, u.email, u.role));
         setIsLoaded(true);
         navigate("/");
       })
