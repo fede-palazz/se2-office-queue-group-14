@@ -1,0 +1,58 @@
+.App {
+  font-family: Arial, sans-serif;
+  text-align: center;
+  padding: 20px;
+}
+
+.queue,
+.service {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.queue-container,
+.service-container {
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  text-align: left;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+}
+
+th,
+td {
+  padding: 8px 12px;
+  border: 1px solid #dee2e6;
+  text-align: left;
+}
+
+th {
+  background-color: #e9ecef;
+}
+
+.buttons {
+  background-color: #000;
+  color: #fff;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button {
+  background-color: #000;
+  color: #fff;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 15px;
+}
+
+button:hover {
+  background-color: #333;
+}
