@@ -4,10 +4,9 @@ function ticketController() {
   const dao = new ticketDAO();
 
   this.createTicket = async (service_id) => {
-    console.log("Debug: ticketData: ", ticketData);
+    console.log(service_id);
     try {
-      const ticketCode = 3;
-      const ticket = await dao.createTicket(ticket_code, service_id);
+      const ticket = await dao.createTicket(service_id);
       return ticket;
     } catch (error) {
       throw error;

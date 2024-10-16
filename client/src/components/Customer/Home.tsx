@@ -4,40 +4,48 @@ import { TicketPerforated, Printer } from "react-bootstrap-icons";
 import { useEffect, useState } from "react";
 import API from "../../API/API";
 import PropTypes from "prop-types";
-import QRCode from "qrcode.react";
+import { QRCodeSVG } from "qrcode.react";
 
-function QRCode(props) {
+function QRCodeComponent(props) {
   return (
     <Container>
-      <h3>QR Code:</h3>
-      <QRCode value={props.ticketCode} />
-      <h3>Ticket Code:</h3>
-      <p>{props.ticketCode}</p>
+      <QRCodeSVG
+        value={props.ticketCode}
+        title={"Title for my QR Code"}
+        size={128}
+        bgColor={"#ffffff"}
+        fgColor={"#000000"}
+        level={"L"}
+        marginSize={0}></QRCodeSVG>
+      <h5 className="my-3">
+        Ticket Code: <span className="fw-bold">{props.ticketCode}</span>
+      </h5>
+      <h5 className="my-3">
+        Estimated waiting time:{" "}
+        <span className="fw-bold">{props.ticketCode}</span>
+      </h5>
     </Container>
   );
 }
 
 function TicketModal(props) {
+  const { ticketCode, ...modalProps } = props;
   return (
-    <Modal {...props} centered>
+    <Modal {...modalProps} centered>
       <Modal.Header className="text-center">
         <Modal.Title id="contained-modal-title-vcenter">
           Scan your ticket
         </Modal.Title>
       </Modal.Header>
-      <Modal.Body>
-        <p>
-          Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
-          dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac
-          consectetur ac, vestibulum at eros.
-        </p>
+      <Modal.Body className="text-center">
+        <QRCodeComponent ticketCode={ticketCode}></QRCodeComponent>
       </Modal.Body>
       <Modal.Footer className="justify-content-between">
-        <Button size="sm" onClick={props.onHide} variant="dark">
+        <Button size="sm" onClick={modalProps.onHide} variant="dark">
           <Printer size={24} />
           <span className="m-2">Print</span>
         </Button>
-        <Button variant="outline-danger" size="sm" onClick={props.onHide}>
+        <Button variant="outline-danger" size="sm" onClick={modalProps.onHide}>
           Close
         </Button>
       </Modal.Footer>
@@ -102,9 +110,18 @@ function ServiceList(props) {
 function Home() {
   const [selectedService, setSelectedService] = useState<any>(undefined);
   const [modalShow, setModalShow] = useState<any>(false);
+  const [ticketCode, setTicketCode] = useState<any>("");
 
   const handleGettingTicket = () => {
-    setModalShow(true);
+    API.createTicket(selectedService)
+      .then((response) => {
+        setTicketCode(response.ticket_code);
+        setModalShow(true);
+      })
+      .catch((err) => {
+        return;
+        //TODO error handling
+      });
   };
 
   return (
@@ -121,7 +138,15 @@ function Home() {
           <TicketPerforated size={24} />
           <span className="m-2">Get Ticket</span>
         </Button>
-        <TicketModal show={modalShow} onHide={() => setModalShow(false)} />
+        <TicketModal
+          ticketCode={ticketCode}
+          show={modalShow}
+          onHide={() => {
+            setModalShow(false);
+            setTicketCode("");
+            setSelectedService(undefined);
+          }}
+        />
       </Container>
     </>
   );

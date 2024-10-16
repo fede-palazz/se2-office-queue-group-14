@@ -46,7 +46,7 @@ async function getUserInfo() {
 }
 
 async function getServices() {
-  const response = await fetch(baseURL + "api/services", {
+  const response = await fetch(baseURL + "services", {
     credentials: "include",
   });
   if (response.ok) {
@@ -60,6 +60,26 @@ async function getServices() {
   }
 }
 
-const API = { login, logOut, getUserInfo, getServices };
+async function createTicket(service_id) {
+  const response = await fetch(baseURL + "tickets", {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ service_id: service_id }),
+  });
+  if (response.ok) {
+    const ticket = await response.json();
+    return ticket;
+  } else {
+    const errDetail = await response.json();
+    if (errDetail.error) throw errDetail.error;
+    if (errDetail.message) throw errDetail.message;
+    throw new Error("Error. Please reload the page");
+  }
+}
+
+const API = { login, logOut, getUserInfo, getServices, createTicket };
 
 export default API;
