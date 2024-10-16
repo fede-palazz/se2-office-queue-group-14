@@ -25,22 +25,17 @@ function ServiceRoutes(authenticator) {
         });
 
         // Create a new service.
-        //Body needs this fields: service_id, service_name, avg_service_time
+        //Body needs this fields: service_name, avg_service_time
         this.router.post("/", 
-            [body("service_id").isString(),
-            body("service_name").isString(),
-            body("avg_service_time").isString(),
-            ]
-            ,
+            body("service_name").notEmpty().isString(),
+            body("avg_service_time").notEmpty(),
+            validateRequest,
+            this.authenticator.isAdmin,
             (req, res, next) => {
             this.serviceController
-                .createService(req.body.serviceId, req.body.serviceName, req.body.avg_service_time)
-                .then((result) => {
-                    res.status(200).send(result);
-                })
-                .catch((err) => {
-                    res.send("Error here: ", err);
-                });
+                .createService(req.body.serviceName, req.body.avg_service_time)
+                .then(() => res.status(200).end())
+                .catch((err) => next(err));
         });
 
         //Change serviceId , serviceName
@@ -110,9 +105,7 @@ function ServiceRoutes(authenticator) {
                 .then((result) => {
                     res.status(200).send(result);
                 })
-                .catch((err) => {
-                    res.send("Error here: ", err);
-                });
+                .catch((err) => next(err));
         });
     }
 
