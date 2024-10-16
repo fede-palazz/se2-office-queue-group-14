@@ -19,9 +19,7 @@ function initRoutes(app) {
   app.use(`${PREFIX}/users`, userRoutes.getRouter());
   app.use(`${PREFIX}/api/queues`, new QueueRoutes(authenticator).getRouter());
   app.use(`${PREFIX}/api/services`, new ServiceRoutes(authenticator).getRouter());
-  app.use(`${PREFIX}/counters`, new CounterRoutes(authenticator).getRouter());
-  
-
+  app.use(`${PREFIX}/api/counters`, new CounterRoutes(authenticator).getRouter());
 }
 
 export default initRoutes;

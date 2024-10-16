@@ -1,6 +1,6 @@
 import React from "react";
 import "./App.css";
-import { Login } from "./components/Login/Login.tsx";
+import Login from "./components/Login/Login.tsx";
 import { Container } from "react-bootstrap";
 import { Routes, Route } from "react-router-dom";
 import { Navigate, useNavigate } from "react-router-dom";
@@ -79,7 +79,7 @@ function App() {
   };
 
   return (
-    <Container fluid style={{ padding: "0", height: "100%" }}>
+    <Container fluid className="p-0 h-100">
       <Routes>
         <Route
           path="/"
