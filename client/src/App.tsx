@@ -1,5 +1,6 @@
+import React from "react";
 import "./App.css";
-import { Login } from "./components/Login/Login";
+import { Login } from "./components/Login/Login.tsx";
 import { Container } from "react-bootstrap";
 import { Routes, Route } from "react-router-dom";
 import { Navigate, useNavigate } from "react-router-dom";
@@ -10,14 +11,14 @@ import { EditServices } from "./components/Admin/EditServices.tsx";
 import { CounterOfficer } from "./components/CounterOfficer/CounterOfficer.tsx";
 
 import "bootstrap/dist/css/bootstrap.css";
-
-import { ROLES, User, UserContext } from "./components/Login/UserContext";
+import { ROLES, User, UserContext } from "./components/Login/UserContext.tsx";
+import Home from "./components/Customer/Home.tsx";
+import TopBar from "./components/Navigation/TopBar.tsx";
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [loginMessage, setLoginMessage] = useState("");
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [user, setUser] = useState(undefined);
+  const [user, setUser] = useState<User | undefined>(undefined);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -26,28 +27,26 @@ function App() {
         const u = await API.getUserInfo();
         setUser(new User(u.username, u.name, u.email, u.role));
         setLoggedIn(true);
-        setIsLoaded(true);
         navigate("/");
       } catch {
         setLoggedIn(false);
         setUser(undefined);
-        setIsLoaded(true);
       }
     };
 
     checkAuth();
   }, []);
 
-  const dologin = function (username, password) {
+  const dologin = (username, password) => {
     API.login(username, password)
       .then((u) => {
         setLoggedIn(true);
-        setUser(new User(u.username, u.name, u.email, u.role));
-        setIsLoaded(true);
-        navigate("/");
+        const user = new User(u.username, u.name, u.email, u.role);
+        setUser(user);
+        redirect(user);
       })
       .catch((err) => {
-        console.log(typeof err);
+        console.log(err);
         setLoginMessage(
           err.error
             ? err.error
@@ -60,7 +59,7 @@ function App() {
       });
   };
 
-  const doLogout = function () {
+  const doLogout = () => {
     API.logOut().then(() => {
       setLoggedIn(false);
       setUser(undefined);
@@ -68,17 +67,40 @@ function App() {
     });
   };
 
-  const redirect = function () {
-    if (user.role.toLowerCase() === ROLES.MANAGER) {
-      navigate("/manager");
-    } else {
-      navigate("/home");
+  const redirect = (user: User) => {
+    switch (user?.role) {
+      case ROLES.ADMIN:
+        navigate("/admin");
+        break;
+      case ROLES.OFFICER:
+        navigate("/officer");
+        break;
+      default:
+        navigate("/home");
     }
   };
 
   return (
     <Container fluid style={{ padding: "0", height: "100%" }}>
       <Routes>
+        <Route
+          path="/"
+          element={
+            <>
+              <TopBar doLogout={doLogout} />
+              <Home />
+            </>
+          }
+        />
+        <Route
+          path="/home"
+          element={
+            <>
+              <TopBar doLogout={doLogout} />
+              <Home />
+            </>
+          }
+        />
         <Route
           path="/login"
           element={
@@ -89,36 +111,21 @@ function App() {
             />
           }
         />
-
         <Route
-          path="/"
+          path="/admin"
           element={
-            loggedIn ? <Navigate to="/home" /> : <Navigate to="/login" />
-          }
-        />
-
-        <Route path="/admin" element={<Admin />} />
-        <Route path="/edit-services" element={<EditServices />} />
-        <Route path="/counter-officer" element={<CounterOfficer />} />
-
-        <Route
-          path="/home"
-          element={
-            loggedIn && (
-              <div className="d-flex justify-content-between align-items-center p-3 bg-light">
-                <div>
-                  Welcome, {user.name} ({user.role})
-                </div>
-                <button className="btn" onClick={redirect}>
-                  Go to my page
-                </button>
-                <button className="btn btn-danger" onClick={doLogout}>
-                  Logout
-                </button>
-              </div>
+            loggedIn && user!.role === ROLES.ADMIN ? (
+              <>
+                <TopBar user={user} doLogout={doLogout} />
+                <Admin />
+              </>
+            ) : (
+              <Navigate to="/login" />
             )
           }
         />
+        <Route path="/edit-services" element={<EditServices />} />
+        <Route path="/counter-officer" element={<CounterOfficer />} />
       </Routes>
     </Container>
   );

@@ -1,4 +1,4 @@
-import QueueDAO from "../daos/QueueDAO.js";
+import QueueDAO from "../daos/queueDAO.js";
 
 /**
  * Represents a controller for managing queues.

@@ -1,5 +1,4 @@
 import React from "react";
-import ReactDOM from "react-dom";
 import "./EditServices.css";
 import { EditServicesModal } from "./EditServicesModal";
 import { AddServiceModal } from "./AddServiceModal";
