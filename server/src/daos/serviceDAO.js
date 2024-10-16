@@ -41,7 +41,15 @@ class ServiceDAO {
           reject(new ServiceNotFound());
           return;
         }
-        resolve(new Service(row.service_id, row.service_name, row.avg_service_time));
+        resolve(
+          new Service(
+            row.service_id,
+            row.service_name,
+            row.avg_service_time,
+            row.description,
+            row.daily_index
+          )
+        );
       });
     });
   }
@@ -125,7 +133,18 @@ class ServiceDAO {
           reject(err);
           return;
         }
-        resolve(rows.map((row) => new Service(row.service_id, row.service_name, row.avg_service_time)));
+        resolve(
+          rows.map(
+            (row) =>
+              new Service(
+                row.service_id,
+                row.service_name,
+                row.avg_service_time,
+                row.description,
+                row.daily_index
+              )
+          )
+        );
       });
     });
   }

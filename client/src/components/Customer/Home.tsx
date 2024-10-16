@@ -4,6 +4,18 @@ import { TicketPerforated, Printer } from "react-bootstrap-icons";
 import { useEffect, useState } from "react";
 import API from "../../API/API";
 import PropTypes from "prop-types";
+import QRCode from "qrcode.react";
+
+function QRCode(props) {
+  return (
+    <Container>
+      <h3>QR Code:</h3>
+      <QRCode value={props.ticketCode} />
+      <h3>Ticket Code:</h3>
+      <p>{props.ticketCode}</p>
+    </Container>
+  );
+}
 
 function TicketModal(props) {
   return (
