@@ -1,8 +1,24 @@
-import React from "react";
-// import "./Admin.css";
-import { Form, Card, Container, Row, Col } from "react-bootstrap";
+import React, { useEffect, useState } from "react";
+import { Form, Card, Container, Row, Col, Button } from "react-bootstrap";
+import API from "../../API/API";
 
 function Counters() {
+  const [counters, setCounters] = useState<any[]>([]);
+
+  useEffect(() => {
+    const fetchCounters = async () => {
+      try {
+        const counters = await API.getCountersServices();
+        setCounters(counters);
+        console.log(counters);
+      } catch (err) {
+        setCounters([]);
+        console.error(err);
+      }
+    };
+    fetchCounters();
+  }, []);
+
   return (
     <Container className="pt-5">
       <Row className="w-100">
@@ -11,47 +27,24 @@ function Counters() {
         </Col>
       </Row>
       <Row>
-        <Col xs={12} md className=" mb-3">
-          <Card className="mx-auto" style={{ minWidth: "200px", maxWidth: "400px" }}>
-            <Card.Body>
-              <Card.Title>Card Title</Card.Title>
-              <Card.Subtitle className="mb-2 text-muted">Card Subtitle</Card.Subtitle>
-              <Card.Text>
-                Some quick example text to build on the card title and make up the bulk of the
-                card's content.
-              </Card.Text>
-              <Card.Link href="#">Card Link</Card.Link>
-              <Card.Link href="#">Another Link</Card.Link>
-            </Card.Body>
-          </Card>
-        </Col>
-        <Col xs={12} md className="">
-          <Card className="mx-auto" style={{ minWidth: "200px", maxWidth: "400px" }}>
-            <Card.Body>
-              <Card.Title>Card Title</Card.Title>
-              <Card.Subtitle className="mb-2 text-muted">Card Subtitle</Card.Subtitle>
-              <Card.Text>
-                Some quick example text to build on the card title and make up the bulk of the
-                card's content.
-              </Card.Text>
-              <Card.Link href="#">Card Link</Card.Link>
-              <Card.Link href="#">Another Link</Card.Link>
-            </Card.Body>
-          </Card>
-        </Col>
+        {counters &&
+          counters.map((counter) => (
+            <Col xs={12} md className="mb-3" key={counter.id}>
+              <Card className="mx-auto" style={{ minWidth: "200px", maxWidth: "400px" }}>
+                <Card.Body>
+                  <Card.Title>{counter.name}</Card.Title>
+                  <ul className="mb-4">
+                    {counter.services.map((service) => (
+                      <li key={service.id}>{service.name}</li>
+                    ))}
+                  </ul>
+                  <Button variant="dark">Edit services</Button>
+                </Card.Body>
+              </Card>
+            </Col>
+          ))}
       </Row>
     </Container>
-    // <div className="App">
-    //   <header className="App-header">
-    //     <h1>Configure counters</h1>
-    //   </header>
-    //   <div className="counter-grid">
-    //     <Counter title="Counter 1" services={["send/receive package"]} />
-    //     <Counter title="Counter 2" services={["send/receive letter"]} />
-    //     <Counter title="Counter 3" services={["send/receive package", "send/receive letter"]} />
-    //     <Counter title="Counter 4" services={["bill payment"]} />
-    //   </div>
-    // </div>
   );
 }
 

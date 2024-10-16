@@ -60,6 +60,22 @@ async function getServices() {
   }
 }
 
-const API = { login, logOut, getUserInfo, getServices };
+/** ------------------- Counters APIs ------------------------ */
+async function getCountersServices() {
+  const response = await fetch(baseURL + "api/counters/all", {
+    credentials: "include",
+  });
+  if (response.ok) {
+    const counters = await response.json();
+    return counters;
+  } else {
+    const errDetail = await response.json();
+    if (errDetail.error) throw errDetail.error;
+    if (errDetail.message) throw errDetail.message;
+    throw new Error("Error. Please reload the page");
+  }
+}
+
+const API = { login, logOut, getUserInfo, getServices, getCountersServices };
 
 export default API;
