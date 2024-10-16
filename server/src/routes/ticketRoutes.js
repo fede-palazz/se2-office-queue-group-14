@@ -32,7 +32,7 @@ function TicketRoutes(authenticator) {
           res.status(200).send(result);
         })
         .catch((err) => {
-          next();
+          next(err);
         });
     });
   };

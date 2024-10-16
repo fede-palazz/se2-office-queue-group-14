@@ -21,15 +21,14 @@ function QRCodeComponent(props) {
         Ticket Code: <span className="fw-bold">{props.ticketCode}</span>
       </h5>
       <h5 className="my-3">
-        Estimated waiting time:{" "}
-        <span className="fw-bold">{props.ticketCode}</span>
+        Estimated waiting time: <span className="fw-bold">{props.time}min</span>
       </h5>
     </Container>
   );
 }
 
 function TicketModal(props) {
-  const { ticketCode, ...modalProps } = props;
+  const { ticketCode, time, ...modalProps } = props;
   return (
     <Modal {...modalProps} centered>
       <Modal.Header className="text-center">
@@ -38,7 +37,7 @@ function TicketModal(props) {
         </Modal.Title>
       </Modal.Header>
       <Modal.Body className="text-center">
-        <QRCodeComponent ticketCode={ticketCode}></QRCodeComponent>
+        <QRCodeComponent ticketCode={ticketCode} time={time}></QRCodeComponent>
       </Modal.Body>
       <Modal.Footer className="justify-content-between">
         <Button size="sm" onClick={modalProps.onHide} variant="dark">
@@ -111,11 +110,13 @@ function Home() {
   const [selectedService, setSelectedService] = useState<any>(undefined);
   const [modalShow, setModalShow] = useState<any>(false);
   const [ticketCode, setTicketCode] = useState<any>("");
+  const [estimatedTime, setEstimatedTime] = useState(0);
 
   const handleGettingTicket = () => {
     API.createTicket(selectedService)
       .then((response) => {
-        setTicketCode(response.ticket_code);
+        setTicketCode(response.ticket.ticket_code);
+        setEstimatedTime(response.time);
         setModalShow(true);
       })
       .catch((err) => {
@@ -132,6 +133,7 @@ function Home() {
           selectedService={selectedService}
           setSelectedService={setSelectedService}></ServiceList>
         <Button
+          className="mt-3"
           variant="dark"
           disabled={selectedService === undefined}
           onClick={handleGettingTicket}>
@@ -140,10 +142,12 @@ function Home() {
         </Button>
         <TicketModal
           ticketCode={ticketCode}
+          time={estimatedTime}
           show={modalShow}
           onHide={() => {
             setModalShow(false);
             setTicketCode("");
+            setEstimatedTime(0);
             setSelectedService(undefined);
           }}
         />

@@ -76,6 +76,56 @@ function ticketDao() {
       });
     });
   };
+
+  this.getEstimatedWaitTime = async function (service_id) {
+    try {
+      const service = await this.serviceDao.getServiceById(service_id);
+      // Get the number of tickets in progress with the same service_id
+      const ticketsInProgress = await new Promise((resolve, reject) => {
+        const sql =
+          "SELECT COUNT(*) as count FROM Ticket WHERE service_id = ? AND status = 'waiting' ";
+        this.db.get(sql, [service_id], (err, row) => {
+          if (err) {
+            reject(err);
+            return;
+          }
+          resolve(row.count);
+          return;
+        });
+      });
+
+      // From the table Counter_Service
+      const summation = await new Promise((resolve, reject) => {
+        const sql = `SELECT counter_id,COUNT(*) as occurrences 
+                      FROM Counter_Service 
+                      WHERE counter_id IN (
+                          SELECT counter_id 
+                          FROM Counter_Service 
+                          WHERE service_id = ?
+                      )GROUP BY counter_id;`;
+        this.db.all(sql, [service_id], (err, rows) => {
+          if (err) {
+            reject(err);
+            return;
+          }
+          let total = 0;
+
+          for (let i = 0; i < rows.length; i++) {
+            total += 1 / rows[i].occurrences;
+          }
+          resolve(total);
+        });
+      });
+
+      // Calculate the estimated wait time
+      const estimatedWaitTime =
+        service.avg_service_time * (ticketsInProgress / summation + 0.5);
+      return estimatedWaitTime;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  };
 }
 
 export default ticketDao;
