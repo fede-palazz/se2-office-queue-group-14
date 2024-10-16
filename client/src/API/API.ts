@@ -46,7 +46,7 @@ async function getUserInfo() {
 }
 
 async function getServices() {
-  const response = await fetch(baseURL + "services", {
+  const response = await fetch(baseURL + "api/services", {
     credentials: "include",
   });
   if (response.ok) {

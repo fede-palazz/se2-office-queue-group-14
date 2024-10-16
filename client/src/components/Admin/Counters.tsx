@@ -10,7 +10,6 @@ function Counters() {
       try {
         const counters = await API.getCountersServices();
         setCounters(counters);
-        console.log(counters);
       } catch (err) {
         setCounters([]);
         console.error(err);

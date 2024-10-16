@@ -16,7 +16,8 @@ function QRCodeComponent(props) {
         bgColor={"#ffffff"}
         fgColor={"#000000"}
         level={"L"}
-        marginSize={0}></QRCodeSVG>
+        marginSize={0}
+      ></QRCodeSVG>
       <h5 className="my-3">
         Ticket Code: <span className="fw-bold">{props.ticketCode}</span>
       </h5>
@@ -32,9 +33,7 @@ function TicketModal(props) {
   return (
     <Modal {...modalProps} centered>
       <Modal.Header className="text-center">
-        <Modal.Title id="contained-modal-title-vcenter">
-          Scan your ticket
-        </Modal.Title>
+        <Modal.Title id="contained-modal-title-vcenter">Scan your ticket</Modal.Title>
       </Modal.Header>
       <Modal.Body className="text-center">
         <QRCodeComponent ticketCode={ticketCode} time={time}></QRCodeComponent>
@@ -78,26 +77,17 @@ function ServiceList(props) {
         services.map((service) => (
           <Col key={service.service_id}>
             <Card
-              bg={
-                props.selectedService == service.service_id ? "dark" : "light"
-              }
-              border={
-                props.selectedService == service.service_id ? "light" : "dark"
-              }
+              bg={props.selectedService == service.service_id ? "dark" : "light"}
+              border={props.selectedService == service.service_id ? "light" : "dark"}
               key={service.service_id}
-              text={
-                props.selectedService == service.service_id ? "light" : "dark"
-              }
+              text={props.selectedService == service.service_id ? "light" : "dark"}
               style={{ width: "18rem", cursor: "pointer" }}
               className="mb-2 text-center"
-              onClick={() => handleServiceSelection(service.service_id)}>
-              <Card.Header className="fw-bold fs-3">
-                {service.service_name}
-              </Card.Header>
+              onClick={() => handleServiceSelection(service.service_id)}
+            >
+              <Card.Header className="fw-bold fs-3">{service.service_name}</Card.Header>
               <Card.Body>
-                <Card.Text>
-                  {service.avg_service_time} minutes of average service time{" "}
-                </Card.Text>
+                <Card.Text>{service.avg_service_time} minutes of average service time </Card.Text>
               </Card.Body>
             </Card>
           </Col>
@@ -131,12 +121,14 @@ function Home() {
         <h1 className="my-4 p-3 text-center">Select the requested service</h1>
         <ServiceList
           selectedService={selectedService}
-          setSelectedService={setSelectedService}></ServiceList>
+          setSelectedService={setSelectedService}
+        ></ServiceList>
         <Button
           className="mt-3"
           variant="dark"
           disabled={selectedService === undefined}
-          onClick={handleGettingTicket}>
+          onClick={handleGettingTicket}
+        >
           <TicketPerforated size={24} />
           <span className="m-2">Get Ticket</span>
         </Button>
