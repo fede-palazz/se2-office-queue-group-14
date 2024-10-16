@@ -39,17 +39,35 @@ function TicketRoutes(authenticator) {
       };
 
       // CHange ticket status to custom status
-      this.router.put("/:id",
-        [body("status").isString()],
-        (req, res, next) => {
+      this.router.put("/:id", [body("status").isString()], (req, res, next) => {
         this.ticketController
           .changeTicketStatus(req.params.id, body.status)
-          .then((result) => {
-            res.status(200).send(result);
-          })
-          .catch((err) => {
-            res.send("Error here: ", err);
-          });
+          .then((result) => { res.status(200).send(result);})
+          .catch((err) => { res.send("Error here: ", err); });
+      });
+
+      // Get all tickets in progress
+      this.router.get("/in_progress", (req, res, next) => {
+        this.ticketController
+          .getTicketsInProgress()
+          .then((result) => { res.status(200).send(result);})
+          .catch((err) => { res.send("Error here: ", err); });
+      });
+
+      // Update counter_id
+      this.router.put("/:id/counter", [body("counter_id").isInt()], (req, res, next) => {
+        this.ticketController
+          .updateCounterId(req.params.id, body.counter_id)
+          .then((result) => { res.status(200).send(result);})
+          .catch((err) => { res.send("Error here: ", err); });
+      });
+
+      // Get estimated wait time
+      this.router.get("/:id/estimated_wait_time", (req, res, next) => {
+        this.ticketController
+          .getEstimatedWaitTime(req.params.id)
+          .then((result) => { res.status(200).send(result);})
+          .catch((err) => { res.send("Error here: ", err); });
       });
 
       this.initRoutes();
