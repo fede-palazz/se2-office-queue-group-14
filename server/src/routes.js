@@ -18,7 +18,7 @@ function initRoutes(app) {
   app.use(`${PREFIX}/sessions`, authRoutes.getRouter());
   app.use(`${PREFIX}/users`, userRoutes.getRouter());
   app.use(`${PREFIX}/api/queues`, new QueueRoutes(authenticator).getRouter());
-  app.use(`${PREFIX}/services`, new ServiceRoutes(authenticator).getRouter());
+  app.use(`${PREFIX}/api/services`, new ServiceRoutes(authenticator).getRouter());
   app.use(`${PREFIX}/counters`, new CounterRoutes(authenticator).getRouter());
   
 

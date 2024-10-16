@@ -113,7 +113,6 @@ function ServiceRoutes(authenticator) {
                 .catch((err) => next(err));
 
         });
-    });
   };
 
   this.initRoutes();
