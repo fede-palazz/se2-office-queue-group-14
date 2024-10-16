@@ -4,11 +4,11 @@ function ticketController() {
   const dao = new ticketDAO();
 
   this.createTicket = async (service_id) => {
-    console.log("Debug: ticketData: ", ticketData);
     try {
-      const ticketCode = 3;
-      const ticket = await dao.createTicket(ticket_code, service_id);
-      return ticket;
+      const ticket = await dao.createTicket(service_id);
+      const time = await dao.getEstimatedWaitTime(service_id);
+      let obj = { ticket: ticket, time: time };
+      return obj;
     } catch (error) {
       throw error;
     }
@@ -22,7 +22,6 @@ function ticketController() {
       throw error;
     }
   };
-
 
   this.changeTicketStatus = async (ticketId, status) => {
     try {
@@ -62,7 +61,6 @@ function ticketController() {
       throw error;
     }
   };
-  
 }
 
 export default ticketController;

@@ -24,20 +24,21 @@ function ServiceRoutes(authenticator) {
         });
     });
 
-        // Create a new service.
-        //Body needs this fields: service_name, avg_service_time
-        this.router.post("/", 
-            body("service_name").notEmpty().isString(),
-            body("avg_service_time").notEmpty(),
-            validateRequest,
-            this.authenticator.isAdmin,
-            (req, res, next) => {
-            this.serviceController
-                .createService(req.body.serviceName, req.body.avg_service_time)
-                .then(() => res.status(200).end())
-                .catch((err) => next(err));
-        });
-
+    // Create a new service.
+    //Body needs this fields: service_name, avg_service_time
+    this.router.post(
+      "/",
+      body("service_name").notEmpty().isString(),
+      body("avg_service_time").notEmpty(),
+      validateRequest,
+      this.authenticator.isAdmin,
+      (req, res, next) => {
+        this.serviceController
+          .createService(req.body.serviceName, req.body.avg_service_time)
+          .then(() => res.status(200).end())
+          .catch((err) => next(err));
+      }
+    );
 
     //Change serviceId , serviceName
     this.router.put(
@@ -103,16 +104,15 @@ function ServiceRoutes(authenticator) {
       }
     );
 
-        // get all services
-        this.router.get("/", (req, res, next) => {
-            this.serviceController
-                .getAllServices()
-                .then((result) => {
-                    res.status(200).send(result);
-                })
-                .catch((err) => next(err));
-
-        });
+    // get all services
+    this.router.get("/", (req, res, next) => {
+      this.serviceController
+        .getAllServices()
+        .then((result) => {
+          res.status(200).send(result);
+        })
+        .catch((err) => next(err));
+    });
   };
 
   this.initRoutes();

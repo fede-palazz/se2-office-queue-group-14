@@ -87,7 +87,6 @@ class Authenticator {
    */
   login(req, res, next) {
     return new Promise((resolve, reject) => {
-      console.log(req.body.username + req.body.password);
       passport.authenticate("local", (err, user, info) => {
         if (err) {
           return reject(err);
