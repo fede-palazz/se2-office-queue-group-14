@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import "./EditServices.css";
+// import "./EditServices.css";
 import { EditServicesModal } from "./EditServicesModal";
 
 export const EditServices = () => {
@@ -34,11 +34,7 @@ export const EditServices = () => {
           title="Counter 3"
           services={["send/receive package", "send/receive letter"]}
         />
-        <Counter
-          setModalShow={() => openModal(4)}
-          title="Counter 4"
-          services={["bill payment"]}
-        />
+        <Counter setModalShow={() => openModal(4)} title="Counter 4" services={["bill payment"]} />
       </div>
       <EditServicesModal
         show={modalShow}

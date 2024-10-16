@@ -9,8 +9,12 @@ function TopBar(props) {
       className="d-flex justify-content-between align-items-center bg-dark"
       style={{ minHeight: "80px" }}
     >
-      {props.user && <div className="text-light">Welcome {props.user.name}</div>}
-      {!props.user && <div className="text-light">Welcome to the Post Office</div>}
+      {props.user && <span className="text-light fs-4">Welcome {props.user.name}</span>}
+      {!props.user && (
+        <Link to={"/"} className="text-light fs-4">
+          Welcome to the Post Office
+        </Link>
+      )}
       {props.user && (
         <button className="btn btn-danger mt-0" onClick={props.doLogout}>
           Logout

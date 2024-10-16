@@ -6,7 +6,7 @@ import { Routes, Route } from "react-router-dom";
 import { Navigate, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import API from "./API/API.ts";
-import Admin from "./components/Admin/Admin.tsx";
+import Counters from "./components/Admin/Counters";
 import { EditServices } from "./components/Admin/EditServices.tsx";
 import "bootstrap/dist/css/bootstrap.css";
 import { ROLES, User, UserContext } from "./components/Login/UserContext.tsx";
@@ -102,11 +102,10 @@ function App() {
         <Route
           path="/login"
           element={
-            <Login
-              login={dologin}
-              message={loginMessage}
-              setMessage={setLoginMessage}
-            />
+            <>
+              <TopBar user={user} doLogout={doLogout} />{" "}
+              <Login login={dologin} message={loginMessage} setMessage={setLoginMessage} />
+            </>
           }
         />
         <Route
@@ -115,7 +114,7 @@ function App() {
             loggedIn && user!.role === ROLES.ADMIN ? (
               <>
                 <TopBar user={user} doLogout={doLogout} />
-                <Admin />
+                <Counters />
               </>
             ) : (
               <Navigate to="/login" />
