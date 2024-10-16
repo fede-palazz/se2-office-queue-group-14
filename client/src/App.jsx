@@ -7,6 +7,8 @@ import { useEffect, useState } from "react";
 import API from "./API/API.ts";
 import Admin from "./components/Admin/Admin.tsx";
 import { EditServices } from "./components/Admin/EditServices.tsx";
+import { CounterOfficer } from "./components/CounterOfficer/CounterOfficer.tsx";
+
 import "bootstrap/dist/css/bootstrap.css";
 
 import { ROLES, User, UserContext } from "./components/Login/UserContext";
@@ -97,6 +99,7 @@ function App() {
 
         <Route path="/admin" element={<Admin />} />
         <Route path="/edit-services" element={<EditServices />} />
+        <Route path="/counter-officer" element={<CounterOfficer />} />
 
         <Route
           path="/home"

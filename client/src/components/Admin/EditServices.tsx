@@ -4,18 +4,23 @@ import "./EditServices.css";
 import { EditServicesModal } from "./EditServicesModal";
 
 export const EditServices = () => {
-  const [modalShow, setModalShow] = React.useState(false);
+  const [editModalShow, setEditModalShow] = React.useState(false);
   const [counterNumber, setCounterNumber] = React.useState(null);
   const openModal = (index) => {
     setCounterNumber(index);
-    setModalShow(true);
+    setEditModalShow(true);
   };
+  const openAddServiceModal = (index) => {
+    setCounterNumber(index);
+    setEditModalShow(true);
+  };
+
   return (
     <div className="app">
       <header className="header">
         <h1>Configure counters</h1>
         <div>
-          <button>Add service</button>
+          <button onClick={openAddServiceModal}>Add service</button>
         </div>
       </header>
       <div className="counter-grid">
@@ -41,8 +46,8 @@ export const EditServices = () => {
         />
       </div>
       <EditServicesModal
-        show={modalShow}
-        onHide={() => setModalShow(false)}
+        show={editModalShow}
+        onHide={() => setEditModalShow(false)}
         index={counterNumber}
       />
     </div>

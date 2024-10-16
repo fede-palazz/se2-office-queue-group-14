@@ -1,33 +1,68 @@
 import React from "react";
-import "./Admin.css";
-import { useNavigate } from "react-router-dom";
+import ReactDOM from "react-dom";
+import "./EditServices.css";
+import { EditServicesModal } from "./EditServicesModal";
+import { AddServiceModal } from "./AddServiceModal";
 
-function Admin() {
+const Admins = () => {
+  const [editModalShow, setEditModalShow] = React.useState(false);
+  const [addModalShow, setAddModalShow] = React.useState(false);
+  const [counterNumber, setCounterNumber] = React.useState(null);
+  const openModal = (index) => {
+    setCounterNumber(index);
+    setEditModalShow(true);
+  };
+  const openAddServiceModal = (index) => {
+    setAddModalShow(true);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
+    <div className="app">
+      <header className="header">
         <h1>Configure counters</h1>
+        <div>
+          <button onClick={openAddServiceModal} className="button">
+            Add service
+          </button>
+        </div>
       </header>
       <div className="counter-grid">
-        <Counter title="Counter 1" services={["send/receive package"]} />
-        <Counter title="Counter 2" services={["send/receive letter"]} />
         <Counter
+          setModalShow={() => openModal(1)}
+          title="Counter 1"
+          services={["send/receive package"]}
+        />
+        <Counter
+          setModalShow={() => openModal(2)}
+          title="Counter 2"
+          services={["send/receive letter"]}
+        />
+        <Counter
+          setModalShow={() => openModal(3)}
           title="Counter 3"
           services={["send/receive package", "send/receive letter"]}
         />
-        <Counter title="Counter 4" services={["bill payment"]} />
+        <Counter
+          setModalShow={() => openModal(4)}
+          title="Counter 4"
+          services={["bill payment"]}
+        />
       </div>
+      <EditServicesModal
+        show={editModalShow}
+        onHide={() => setEditModalShow(false)}
+        index={counterNumber}
+      />
+      <AddServiceModal
+        show={addModalShow}
+        onHide={() => setAddModalShow(false)}
+      />
     </div>
   );
-}
+};
+export default Admins;
 
-function Counter({ title, services }) {
-  const navigate = useNavigate();
-
-  const handleEditServices = () => {
-    navigate("/edit-services", { state: { title, services } });
-  };
-
+const Counter = ({ title, services, setModalShow }) => {
   return (
     <div className="counter-card">
       <h2>{title}</h2>
@@ -37,11 +72,9 @@ function Counter({ title, services }) {
           <li key={index}>{service}</li>
         ))}
       </ul>
-      <button className="edit-services-btn" onClick={handleEditServices}>
+      <button onClick={() => setModalShow(true)} className="edit-services-btn">
         Edit services
       </button>
     </div>
   );
-}
-
-export default Admin;
+};
