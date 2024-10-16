@@ -1,6 +1,7 @@
 import db from "../db/db.js";
 import { Counter } from "../models/Counter.js";
 import { CounterNotFound } from "../errors/counterError.js";
+import { ServiceNotFound } from "../errors/serviceError.js";
 
 class CounterDAO {
   /**
@@ -143,11 +144,80 @@ class CounterDAO {
       });
     });
   }
-  
 
-    
+    // Other methods like updateCounter, deleteCounter can be added similarly.
 
-  // Other methods like updateCounter, deleteCounter can be added similarly.
+    /**
+     * Retrieves all counters.
+     * @returns A Promise that resolves to an array of Counter objects.
+     */
+    getAllCounters() {
+        return new Promise((resolve, reject) => {
+            try {
+                const sql = `SELECT * FROM Counter;`;
+                db.all(sql, (err, rows) => {
+                    if (err) {
+                        reject(err);
+                        return;
+                    }
+                    resolve(rows.length ? rows.map((row) => new Counter(row.counter_id, row.counter_name)) : []);
+                });
+            } catch (error) {
+                reject(error);
+            }
+        });
+    }
+
+    /**
+     * Retrieves all services configured for a counter.
+     * @param {number} counter_id The ID of the counter.
+     * @returns {Promise<Service[]>} A Promise that resolves to an array of Service objects.
+     */
+    getConfiguredServices(counter_id) {
+        return new Promise((resolve, reject) => {
+            try {
+                const sql = `SELECT * FROM Service WHERE service_id IN (SELECT service_id FROM CounterService WHERE counter_id = ?);`;
+                db.all(sql, [counter_id], (err, rows) => {
+                    if (err) {
+                        reject(err);
+                        return;
+                    }
+                    resolve(rows.length ? rows.map((row) => new Service(row.service_id, row.service_name, row.avg_service_time)) : []);
+                });
+            } catch (error) {
+                reject(error);
+            }
+        });
+    }
+
+    /**
+     * Checks if a counter exists in the database.
+     * @param {number} counter_id The ID of the counter to check.
+     * @returns {Promise<void>} A Promise that resolves if the counter exists, rejects if the counter does not exist.
+     * @throws {CounterNotFound} If the counter does not exist.
+     */
+    checkCounterExists(counter_id) {
+        return new Promise((resolve, reject) => {
+            try {
+                const sql = `SELECT * FROM Counter WHERE counter_id = ?;`;
+                db.get(sql, [counter_id], (err, row) => {
+                    if (err) {
+                        reject(err);
+                        return;
+                    }
+                    if (!row) {
+                        reject(new CounterNotFound());
+                        return;
+                    }
+                    resolve();
+                });
+            } catch (error) {
+                reject(error);
+            }
+        });
+    }
+
+
 }
 
 export default CounterDAO;
