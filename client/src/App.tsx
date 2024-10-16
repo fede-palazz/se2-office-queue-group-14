@@ -101,7 +101,13 @@ function App() {
         />
         <Route
           path="/login"
-          element={<Login login={dologin} message={loginMessage} setMessage={setLoginMessage} />}
+          element={
+            <Login
+              login={dologin}
+              message={loginMessage}
+              setMessage={setLoginMessage}
+            />
+          }
         />
         <Route
           path="/admin"

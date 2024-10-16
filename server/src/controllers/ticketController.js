@@ -3,9 +3,10 @@ import ticketDAO from "../daos/ticketDAO.js";
 function ticketController() {
   const dao = new ticketDAO();
 
-  this.createTicket = async (ticket_code, service_id) => {
+  this.createTicket = async (service_id) => {
     console.log("Debug: ticketData: ", ticketData);
     try {
+      const ticketCode = 3;
       const ticket = await dao.createTicket(ticket_code, service_id);
       return ticket;
     } catch (error) {
