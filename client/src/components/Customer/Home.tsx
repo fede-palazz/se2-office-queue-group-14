@@ -4,6 +4,7 @@ import { TicketPerforated, Printer } from "react-bootstrap-icons";
 import { useEffect, useState } from "react";
 import API from "../../API/API";
 import PropTypes from "prop-types";
+import { QRCodeSVG } from "qrcode.react";
 
 function QRCodeComponent(props) {
   return (
