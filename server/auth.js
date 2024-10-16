@@ -1,5 +1,5 @@
 import UserDAO from "./src/daos/userDAO.js";
-
+import { Role } from "./src/models/User.js";
 // Passport-related imports
 import passport from "passport";
 import LocalStrategy from "passport-local";
@@ -132,6 +132,21 @@ class Authenticator {
       return next();
     }
     return res.status(401).json({ error: "Unauthenticated user", status: 401 });
+  }
+
+  /**
+   * Middleware function to check if the user is an admin.
+   *
+   * @param req - The request object.
+   * @param res - The response object.
+   * @param next - The next middleware function.
+   * If the user is an admin, it calls the next middleware function. Otherwise, it returns a 401 error response.
+   */
+  isAdmin(req, res, next) {
+    if (req.isAuthenticated() && req.user.role === Role.ADMIN) {
+      return next();
+    }
+    return res.status(401).json({ error: "Unauthorized user", status: 401 });
   }
 }
 

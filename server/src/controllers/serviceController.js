@@ -10,13 +10,13 @@ class ServiceController {
 
   /**
    * Creates a new service.
-   * @param service_id - The unique ID of the service.
    * @param service_name - The name of the service. Must not be null.
    * @param avg_service_time - The average service time. Must not be null.
    * @returns A Promise that resolves to true if the service has been created.
    */
-  async createService(service_id, service_name, avg_service_time) {
-    return this.dao.createService(service_id, service_name, avg_service_time);
+  async createService(service_name, avg_service_time) {
+    await this.dao.checkServiceNotExists(service_name);
+    return this.dao.createService(service_name, avg_service_time);
   }
 
   /**

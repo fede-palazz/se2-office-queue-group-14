@@ -1,5 +1,5 @@
 import CounterDAO from "../daos/counterDAO.js";
-
+import ServiceDAO from "../daos/serviceDAO.js";
 /**
  * Represents a controller for managing counters.
  * All methods of this class must interact with the corresponding DAO class to retrieve or store data.
@@ -7,6 +7,7 @@ import CounterDAO from "../daos/counterDAO.js";
 class CounterController {
   constructor() {
     this.dao = new CounterDAO();
+    this.serviceDao = new ServiceDAO();
   }
 
   /**
@@ -63,6 +64,42 @@ class CounterController {
   }
 
   // Additional methods like updateCounter, deleteCounter, getAllCounters can be added similarly
+
+    /**
+     * Retrieves all counters.
+     * @returns A Promise that resolves to an array of counter objects.
+     */
+    async getAllCounters() {
+        return this.dao.getAllCounters();
+    }
+
+    /**
+     * Retrieves all services assigned to a counter.
+     * @param counter_id The unique ID of the counter.
+     * @returns A Promise that resolves to an array of service objects.
+     */
+    async getConfiguredServices(counter_id) {
+        return this.dao.getConfiguredServices(counter_id);
+    }
+
+    /**
+     * Adds the given services to the given counter, by first deleting all existing services
+     * assigned to the counter, and then adding the given services to the counter.
+     * @param counter_id The unique ID of the counter.
+     * @param services An array of service IDs to be added to the counter.
+     * @returns A Promise that resolves to true if the services have been successfully added.
+     */
+    async addServicesToCounter(counter_id, services) {
+        await this.dao.checkCounterExists(counter_id);
+        for (const service of services) {
+            await this.serviceDao.checkServiceExists(service);
+        }
+        await this.dao.deleteAllServicesFromCounter(counter_id);
+        for (const service of services) {
+            await this.dao.assignServiceToCounter(counter_id, service);
+        }
+        return;
+    }
 }
 
 export default CounterController;

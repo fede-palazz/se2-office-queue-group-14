@@ -1,6 +1,6 @@
 import db from "../db/db.js";
 import { Service } from "../models/Service.js";
-import { ServiceNotFound } from "../errors/serviceError.js";
+import { ServiceNotFound, ServiceAlreadyExistsError } from "../errors/serviceError.js";
 
 class ServiceDAO {
   /**
@@ -150,6 +150,56 @@ class ServiceDAO {
   }
 
   // Other methods like updateService, deleteService can be added similarly.
+
+    /**
+     * Checks if a service with the given name does not already exist in the database.
+     * @param service_name The name of the service to check.
+     * @returns A Promise that resolves to nothing if the service does not exist, or rejects with a ServiceAlreadyExistsError if the service already exists.
+     */
+    checkServiceNotExists(service_name) {
+        return new Promise((resolve, reject) => {
+            const sql = `SELECT * FROM Service WHERE service_name = ?;`;
+            db.get(sql, [service_name], (err, row) => {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+                if (row) {
+                    reject(new ServiceAlreadyExistsError());
+                    return;
+                }
+                resolve();
+            });
+        });
+    }
+
+    /**
+     * Checks if a service exists in the database.
+     * @param {number} service_id The ID of the service to check.
+     * @returns {Promise<void>} A Promise that resolves if the service exists, rejects if the service does not exist.
+     * @throws {ServiceNotFound} If the service does not exist.
+     */
+    checkServiceExists(service_id) {
+        return new Promise((resolve, reject) => {
+            try {
+                const sql = `SELECT * FROM Service WHERE service_id = ?;`;
+                db.get(sql, [service_id], (err, row) => {
+                    if (err) {
+                        reject(err);
+                        return;
+                    }
+                    if (!row) {
+                        reject(new ServiceNotFound());
+                        return;
+                    }
+                    resolve();
+                });
+            } catch (error) {
+                reject(error);
+            }
+        });
+    }
+  
 }
 
 export default ServiceDAO;
