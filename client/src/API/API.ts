@@ -76,6 +76,43 @@ async function getCountersServices() {
   }
 }
 
+async function getServicesByCounter(counterId) {
+  const response = await fetch(baseURL + "api/counters/" + counterId, {
+    credentials: "include",
+  });
+  if (response.ok) {
+    const counters = await response.json();
+    return counters;
+  } else {
+    const errDetail = await response.json();
+    if (errDetail.error) throw errDetail.error;
+    if (errDetail.message) throw errDetail.message;
+    throw new Error("Error. Please reload the page");
+  }
+}
+
+async function updateCounterServices(counterId, serviceIds) {
+  console.log(serviceIds);
+  const response = await fetch(baseURL + "api/counters/", {
+    credentials: "include",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    method: "POST",
+    body: JSON.stringify({ counter_id: counterId, services: serviceIds }),
+  });
+  if (response.ok) {
+    const res = await response.json();
+    return res;
+  } else {
+    const errDetail = await response.json();
+    if (errDetail.error) throw errDetail.error;
+    if (errDetail.message) throw errDetail.message;
+    throw new Error("Error. Please reload the page");
+  }
+}
+
 async function createTicket(service_id) {
   const response = await fetch(baseURL + "tickets", {
     method: "POST",
@@ -96,6 +133,15 @@ async function createTicket(service_id) {
   }
 }
 
-const API = { login, logOut, getUserInfo, getServices, getCountersServices, createTicket };
+const API = {
+  login,
+  logOut,
+  getUserInfo,
+  getServices,
+  getCountersServices,
+  createTicket,
+  updateCounterServices,
+  getServicesByCounter,
+};
 
 export default API;

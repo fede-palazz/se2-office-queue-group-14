@@ -2,6 +2,7 @@ import db from "../db/db.js";
 import { Counter } from "../models/Counter.js";
 import { CounterNotFound } from "../errors/counterError.js";
 import { ServiceNotFound } from "../errors/serviceError.js";
+import { Service } from "../models/Service.js";
 
 class CounterDAO {
   /**
@@ -219,19 +220,18 @@ class CounterDAO {
   getConfiguredServices(counter_id) {
     return new Promise((resolve, reject) => {
       try {
-        const sql = `SELECT * FROM Service WHERE service_id IN (SELECT service_id FROM CounterService WHERE counter_id = ?);`;
+        const sql = `SELECT * FROM Service WHERE service_id IN (SELECT service_id FROM Counter_Service WHERE counter_id = ?);`;
         db.all(sql, [counter_id], (err, rows) => {
           if (err) {
             reject(err);
             return;
           }
-          resolve(
-            rows.length
-              ? rows.map(
-                  (row) => new Service(row.service_id, row.service_name, row.avg_service_time)
-                )
-              : []
-          );
+          console.log(rows);
+          const services = rows.length
+            ? rows.map((row) => new Service(row.service_id, row.service_name, row.avg_service_time))
+            : [];
+          console.log(services);
+          resolve(services);
         });
       } catch (error) {
         reject(error);

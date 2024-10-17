@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Form, Card, Container, Row, Col, Button } from "react-bootstrap";
 import API from "../../API/API";
+import EditServicesModal from "./EditServicesModal";
 
 function Counters() {
   const [counters, setCounters] = useState<any[]>([]);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [editCounter, setEditCounter] = useState(null);
 
   useEffect(() => {
     const fetchCounters = async () => {
@@ -18,6 +21,24 @@ function Counters() {
     fetchCounters();
   }, []);
 
+  const handleEditService = (counterId) => {
+    const counter = counters.find((counter) => counter.id === counterId);
+    console.log(counter);
+    setEditCounter(counter);
+    setShowEditModal(true);
+  };
+
+  const handleSave = (counterId, services) => {
+    try {
+      const response = API.updateCounterServices(counterId, services);
+    } catch (err) {
+      setCounters([]);
+      console.error(err);
+    } finally {
+      setShowEditModal(false);
+    }
+  };
+
   return (
     <Container className="pt-5">
       <Row className="w-100">
@@ -26,40 +47,46 @@ function Counters() {
         </Col>
       </Row>
       <Row>
-        {counters &&
-          counters.map((counter) => (
-            <Col xs={12} md className="mb-3" key={counter.id}>
-              <Card className="mx-auto" style={{ minWidth: "200px", maxWidth: "400px" }}>
-                <Card.Body>
-                  <Card.Title>{counter.name}</Card.Title>
-                  <ul className="mb-4">
-                    {counter.services.map((service) => (
-                      <li key={service.id}>{service.name}</li>
-                    ))}
-                  </ul>
-                  <Button variant="dark">Edit services</Button>
-                </Card.Body>
-              </Card>
-            </Col>
-          ))}
+        {counters.map((counter) => (
+          <Counter
+            counter_id={counter.id}
+            counter_name={counter.name}
+            services={counter.services}
+            handleEdit={handleEditService}
+          />
+        ))}
       </Row>
+      {showEditModal && (
+        <EditServicesModal
+          counter={editCounter}
+          handleSave={handleSave}
+          handleClose={() => {
+            setShowEditModal(false);
+            setEditCounter(null);
+          }}
+        />
+      )}
     </Container>
   );
 }
 
-function Counter({ title, services }) {
+function Counter({ counter_id, counter_name, services, handleEdit }) {
   return (
-    <div className="counter-card">
-      <h2>{title}</h2>
-      <p>Offered services:</p>
-      <ul>
-        {services.map((service, index) => (
-          <li key={index}>{service}</li>
-          // <Form.Check key={index} type={"checkbox"} label={service} id={index} />
-        ))}
-      </ul>
-      <button className="edit-services-btn">Edit services</button>
-    </div>
+    <Col xs={12} md className="mb-3" key={counter_id}>
+      <Card className="mx-auto" style={{ minWidth: "200px", maxWidth: "400px" }}>
+        <Card.Body>
+          <Card.Title>{counter_name}</Card.Title>
+          <ul className="mb-4">
+            {services.map((service) => (
+              <li key={service.id}>{service.name}</li>
+            ))}
+          </ul>
+          <Button variant="dark" onClick={() => handleEdit(counter_id)}>
+            Edit services
+          </Button>
+        </Card.Body>
+      </Card>
+    </Col>
   );
 }
 
